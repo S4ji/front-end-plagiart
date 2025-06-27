@@ -47,6 +47,7 @@
 import { ClientOnly } from '#components'
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+
 import Image from '~/components/Image.vue'
 
 const config = useRuntimeConfig()

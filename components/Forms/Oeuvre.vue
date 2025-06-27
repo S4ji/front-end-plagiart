@@ -69,6 +69,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+const emit = defineEmits(['delete'])
 
 const config = useRuntimeConfig()
 const API_URL = config.public.API_BASE_URL
