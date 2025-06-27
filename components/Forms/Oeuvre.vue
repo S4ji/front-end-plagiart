@@ -130,13 +130,10 @@ const uploadImage = async (file) => {
     const form = new FormData()
     form.append('file', file)
 
-    const response = await fetch(
-        'http://localhost:3300/image/upload/oeuvreImage',
-        {
-            method: 'POST',
-            body: form,
-        }
-    )
+    const response = await fetch(`${API_URL}image/upload/oeuvreImage`, {
+        method: 'POST',
+        body: form,
+    })
 
     if (!response.ok) {
         throw new Error(`Image upload failed: ${response.statusText}`)
@@ -164,8 +161,8 @@ const handleSubmit = async () => {
         }
 
         const url = props.isEditing
-            ? `http://localhost:3300/oeuvres/${props.initialOeuvre.id_oeuvre}`
-            : 'http://localhost:3300/oeuvres/new'
+            ? `${API_URL}/oeuvres/${props.initialOeuvre.id_oeuvre}`
+            : `${API_URL}/oeuvres/new`
 
         const method = props.isEditing ? 'PUT' : 'POST'
 

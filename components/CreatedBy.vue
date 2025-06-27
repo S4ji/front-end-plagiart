@@ -30,7 +30,6 @@ const createdByClass = `
 `
 
 const goToPage = () => {
-    // Naviguer vers la page avec l'id dans l'URL
     router.push({ name: 'profile-id', params: { id: props.id } })
 }
 </script>
