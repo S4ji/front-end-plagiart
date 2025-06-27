@@ -130,7 +130,7 @@ const uploadImage = async (file) => {
     const form = new FormData()
     form.append('file', file)
 
-    const response = await fetch(`${API_URL}image/upload/oeuvreImage`, {
+    const response = await fetch(`${API_URL}/image/upload/oeuvreImage`, {
         method: 'POST',
         body: form,
     })
