@@ -1,16 +1,10 @@
-// composables/useAuth.js
 import { ref, computed } from 'vue'
 
-const isBrowser =
-    typeof window !== 'undefined' && typeof window.localStorage !== 'undefined'
+const isBrowser = typeof window !== 'undefined'
 
-const isLoggedIn = ref(false)
+const _isLoggedIn = ref(isBrowser && !!localStorage.getItem('id'))
 
-if (isBrowser) {
-    isLoggedIn.value = !!localStorage.getItem('id')
-}
-
-const userId = computed({
+const _userId = computed({
     get() {
         return isBrowser ? localStorage.getItem('id') : null
     },
@@ -21,6 +15,7 @@ const userId = computed({
         } else {
             localStorage.setItem('id', value)
         }
+        _isLoggedIn.value = !!value
     },
 })
 
@@ -30,7 +25,7 @@ function login(data) {
     localStorage.setItem('role', data.role)
     localStorage.setItem('name', data.name)
     localStorage.setItem('id', data.id)
-    isLoggedIn.value = true
+    _isLoggedIn.value = true
 }
 
 function logout() {
@@ -39,14 +34,13 @@ function logout() {
     localStorage.removeItem('role')
     localStorage.removeItem('name')
     localStorage.removeItem('id')
-    isLoggedIn.value = false
+    _isLoggedIn.value = false
 }
 
-// ✅ Ceci est l’export manquant
 export function useAuth() {
     return {
-        userId,
-        isLoggedIn,
+        isLoggedIn: _isLoggedIn,
+        userId: _userId,
         login,
         logout,
     }
