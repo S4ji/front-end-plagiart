@@ -4,10 +4,8 @@ import { ref, computed } from 'vue'
 const isBrowser =
     typeof window !== 'undefined' && typeof window.localStorage !== 'undefined'
 
-// Valeur réactive
 const isLoggedIn = ref(false)
 
-// Initialisation au chargement
 if (isBrowser) {
     isLoggedIn.value = !!localStorage.getItem('id')
 }
@@ -42,4 +40,14 @@ function logout() {
     localStorage.removeItem('name')
     localStorage.removeItem('id')
     isLoggedIn.value = false
+}
+
+// ✅ Ceci est l’export manquant
+export function useAuth() {
+    return {
+        userId,
+        isLoggedIn,
+        login,
+        logout,
+    }
 }
