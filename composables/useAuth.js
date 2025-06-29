@@ -1,9 +1,9 @@
+// composables/useAuth.js
 import { computed } from 'vue'
 
 const isBrowser =
     typeof window !== 'undefined' && typeof window.localStorage !== 'undefined'
 
-// Propriété réactive pour l'id utilisateur
 const userId = computed({
     get() {
         return isBrowser ? localStorage.getItem('id') : null
@@ -18,7 +18,6 @@ const userId = computed({
     },
 })
 
-// isLoggedIn basé sur la présence d’un id
 const isLoggedIn = computed(() => {
     return isBrowser && !!localStorage.getItem('id')
 })
@@ -28,7 +27,7 @@ function login(data) {
     localStorage.setItem('sub', data.sub)
     localStorage.setItem('role', data.role)
     localStorage.setItem('name', data.name)
-    localStorage.setItem('id', data.id) // ← clé principale pour isLoggedIn
+    localStorage.setItem('id', data.id)
 }
 
 function logout() {

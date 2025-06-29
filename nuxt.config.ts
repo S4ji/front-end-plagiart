@@ -8,7 +8,8 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             API_BASE_URL:
-                process.env.NUXT_API_BASE_URL || 'http://localhost:3300',
+                process.env.NUXT_API_BASE_URL ||
+                'https://backend-plagiart-0fe46c115868.herokuapp.com',
         },
     },
 })
