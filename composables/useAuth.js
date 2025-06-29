@@ -1,8 +1,16 @@
 // composables/useAuth.js
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 
 const isBrowser =
     typeof window !== 'undefined' && typeof window.localStorage !== 'undefined'
+
+// Valeur réactive
+const isLoggedIn = ref(false)
+
+// Initialisation au chargement
+if (isBrowser) {
+    isLoggedIn.value = !!localStorage.getItem('id')
+}
 
 const userId = computed({
     get() {
@@ -18,16 +26,13 @@ const userId = computed({
     },
 })
 
-const isLoggedIn = computed(() => {
-    return isBrowser && !!localStorage.getItem('id')
-})
-
 function login(data) {
     if (!isBrowser) return
     localStorage.setItem('sub', data.sub)
     localStorage.setItem('role', data.role)
     localStorage.setItem('name', data.name)
     localStorage.setItem('id', data.id)
+    isLoggedIn.value = true
 }
 
 function logout() {
@@ -36,13 +41,7 @@ function logout() {
     localStorage.removeItem('role')
     localStorage.removeItem('name')
     localStorage.removeItem('id')
+    isLoggedIn.value = false
 }
 
-export function useAuth() {
-    return {
-        isLoggedIn,
-        login,
-        logout,
-        userId,
-    }
-}
+exp

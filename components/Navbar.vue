@@ -1,7 +1,7 @@
 <template>
     <Container>
         <header :class="headerClass">
-            <!-- Logo & Burger -->
+            <!-- Logo -->
             <div :class="logoWrapperClass">
                 <a href="/" :class="logoLinkClass">
                     <span class="font-bold">Plag</span><span>'iar</span
@@ -45,7 +45,6 @@
                                 @mouseenter="openSubDropdown = child.title"
                                 @mouseleave="openSubDropdown = null"
                             >
-                                <!-- "Is button" check: if child.title === 'Déconnexion' -->
                                 <component
                                     :is="
                                         child.title === 'Déconnexion'
@@ -81,9 +80,8 @@
                                         <a
                                             :href="subChild.path"
                                             :class="subDropdownLinkClass"
+                                            >{{ subChild.title }}</a
                                         >
-                                            {{ subChild.title }}
-                                        </a>
                                     </li>
                                 </ul>
                             </li>
@@ -94,36 +92,21 @@
         </header>
     </Container>
 </template>
+
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useAuth } from '@/composables/useAuth'
 
 const { userId, logout } = useAuth()
 
-// Champs de recherche
 const searchTerm = ref('')
-
-// Burger menu
 const open = ref(false)
-
-// Dropdowns
 const openDropdown = ref(null)
 const openSubDropdown = ref(null)
 
-// ID utilisateur chargé côté client
-
-onMounted(() => {})
-
-// Menu dynamique avec lien profil utilisant userId
 const menuitems = computed(() => [
-    {
-        title: 'Parcourir',
-        path: '/searchpage',
-    },
-    {
-        title: 'Publier',
-        path: '/publier',
-    },
+    { title: 'Parcourir', path: '/searchpage' },
+    { title: 'Publier', path: '/publier' },
     {
         title: 'Profil',
         path: '/userprofileedit',
@@ -141,36 +124,30 @@ const menuitems = computed(() => [
     },
 ])
 
-// Données pour le champ de recherche
 const myArray = ['chat', 'chien', 'ours', 'loup', 'renard', 'Malabar']
 
-// Déconnexion
-const handleAction = (item) => {
+function handleAction(item) {
     if (item.title === 'Déconnexion') {
-        localStorage.clear()
+        logout()
         window.location.href = '/'
     }
 }
 
-// 💡 Shared base classes
+// classes (non répétées ici pour lisibilité)
 const textHoverBase = 'transition-colors duration-200 cursor-pointer'
 const dropdownContainer = 'absolute bg-white border rounded shadow-md z-10'
 
-// 📦 Final classes
 const headerClass =
     'flex flex-col lg:flex-row justify-between items-center my-5'
 const logoWrapperClass = 'flex w-full lg:w-auto items-center justify-between'
 const logoLinkClass = 'text-lg cursor-pointer'
 const navToggleClass = 'block lg:hidden'
 const burgerButtonClass = 'cursor-pointer'
-
 const navWrapperClass = 'w-full lg:w-auto mt-2 lg:flex lg:mt-0'
 const navListClass = 'flex flex-col lg:flex-row lg:gap-3'
 const navItemLinkClass = `flex lg:px-3 py-2 text-brown-600 hover:text-brown-900 hover:text-gray-300 rounded ${textHoverBase}`
-
 const dropdownClass = `${dropdownContainer} left-0 top-full lg:min-w-[200px]`
 const dropdownLinkClass = `block px-4 py-2 text-brown-600 hover:text-[#94775a] hover:bg-brown-600 ${textHoverBase}`
-
 const subDropdownClass = `${dropdownContainer} left-full top-0 lg:min-w-[200px]`
 const subDropdownLinkClass = `block px-4 py-2 text-brown-600 hover:text-white hover:bg-brown-600 ${textHoverBase}`
 </script>
