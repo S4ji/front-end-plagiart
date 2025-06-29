@@ -96,6 +96,9 @@
 </template>
 <script setup>
 import { ref, onMounted, computed } from 'vue'
+import { useAuth } from '@/composables/useAuth'
+
+const { userId, logout } = useAuth()
 
 // Champs de recherche
 const searchTerm = ref('')
@@ -108,13 +111,8 @@ const openDropdown = ref(null)
 const openSubDropdown = ref(null)
 
 // ID utilisateur chargé côté client
-const userId = ref(null)
 
-onMounted(() => {
-    if (typeof window !== 'undefined') {
-        userId.value = localStorage.getItem('id')
-    }
-})
+onMounted(() => {})
 
 // Menu dynamique avec lien profil utilisant userId
 const menuitems = computed(() => [
@@ -168,7 +166,7 @@ const burgerButtonClass = 'cursor-pointer'
 
 const navWrapperClass = 'w-full lg:w-auto mt-2 lg:flex lg:mt-0'
 const navListClass = 'flex flex-col lg:flex-row lg:gap-3'
-const navItemLinkClass = `flex lg:px-3 py-2 text-brown-600 hover:text-brown-900 hover:text-[#94775a] rounded ${textHoverBase}`
+const navItemLinkClass = `flex lg:px-3 py-2 text-brown-600 hover:text-brown-900 hover:text-gray-300 rounded ${textHoverBase}`
 
 const dropdownClass = `${dropdownContainer} left-0 top-full lg:min-w-[200px]`
 const dropdownLinkClass = `block px-4 py-2 text-brown-600 hover:text-[#94775a] hover:bg-brown-600 ${textHoverBase}`

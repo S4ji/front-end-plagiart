@@ -47,8 +47,11 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAuth } from '@/composables/useAuth'
 
-const currentUserId = localStorage.getItem('id')
+const { userId, logout } = useAuth()
+
+const currentUserId = userId
 const isOwner = computed(() => currentUserId === props.ownerId)
 
 const props = defineProps({

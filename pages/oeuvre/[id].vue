@@ -67,6 +67,9 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useAuth } from '@/composables/useAuth'
+
+const { userId, logout } = useAuth()
 
 const config = useRuntimeConfig()
 const API_URL = config.public.API_BASE_URL
@@ -80,7 +83,6 @@ definePageMeta({
 })
 
 const oeuvreId = route.params.id
-let userId = ref('')
 
 const oeuvre = ref({
     title: '',
@@ -174,9 +176,6 @@ async function fetchOeuvre(id) {
 
 onMounted(async () => {
     if (oeuvreId) {
-        if (import.meta.client) {
-            userId.value = localStorage.getItem('id') || ''
-        }
         await fetchOeuvre(oeuvreId)
         relatedImages.value = await fetchSuggestionsForOeuvre(oeuvreId, 10)
 
@@ -203,7 +202,7 @@ function goToSignalement() {
 
 async function createLike() {
     try {
-        const response = await fetch('http://localhost:3300/likes/new', {
+        const response = await fetch(`${API_URL}/likes/new`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

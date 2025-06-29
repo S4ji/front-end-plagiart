@@ -66,11 +66,12 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRuntimeConfig } from '#imports'
+import { useAuth } from '@/composables/useAuth'
+
+const { userId, logout } = useAuth()
 
 const config = useRuntimeConfig()
 const API_URL = config.public.API_BASE_URL
-
-const userId = localStorage.getItem('id')
 
 const formData = ref({
     nom: '',

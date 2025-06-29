@@ -34,7 +34,9 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useCollectionStore } from '@/stores/collection'
+import { useAuth } from '@/composables/useAuth'
 
+const { userId, logout } = useAuth()
 const isVisible = ref(false)
 const newCollection = ref('')
 const currentOeuvreId = ref(null)
@@ -49,7 +51,6 @@ const API_URL = config.public.API_BASE_URL
 
 // Fetch collections from API and update store
 async function fetchCollectionsByUser() {
-    const userId = localStorage.getItem('id')
     if (!userId) {
         console.error('User ID not found in localStorage')
         return
@@ -82,7 +83,6 @@ async function addCollection() {
     const trimmed = newCollection.value.trim()
     if (!trimmed) return
 
-    const userId = localStorage.getItem('id')
     if (!userId) {
         console.error('User ID not found in localStorage')
         return
@@ -95,7 +95,7 @@ async function addCollection() {
     }
 
     try {
-        const res = await fetch('http://localhost:3300/collections/new', {
+        const res = await fetch(`${API_URL}/collections/new`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
@@ -116,7 +116,7 @@ async function onCollectionClick(collection) {
     }
 
     try {
-        const res = await fetch('http://localhost:3300/collections/add', {
+        const res = await fetch(`${API_URL}/collections/add`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

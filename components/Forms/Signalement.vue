@@ -23,6 +23,9 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useRuntimeConfig } from '#imports'
+import { useAuth } from '@/composables/useAuth'
+
+const { userId, logout } = useAuth()
 
 const router = useRouter()
 const config = useRuntimeConfig()
@@ -31,7 +34,6 @@ const API_URL = config.public.API_BASE_URL
 // En JS pur, on utilise defineProps sans typage
 const props = defineProps(['idOeuvre'])
 
-const userId = localStorage.getItem('id')
 console.log('userId:', userId)
 console.log('props.idOeuvre:', props.idOeuvre)
 
@@ -53,7 +55,7 @@ const handleSubmit = async () => {
     }
 
     try {
-        const response = await fetch('http://localhost:3300/signalements/new', {
+        const response = await fetch(`${API_URL}/signalements/new`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

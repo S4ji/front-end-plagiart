@@ -49,6 +49,9 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useAuth } from '@/composables/useAuth'
+
+const { userId, logout } = useAuth()
 
 // --- UI state ---
 const selectedForm = ref('oeuvre')
@@ -73,7 +76,6 @@ const galleryWrapperClass =
 // --- Données utilisateur ---
 const userOeuvres = ref([])
 const userCollections = ref([])
-const userId = localStorage.getItem('id')
 
 const config = useRuntimeConfig()
 const API_URL = config.public.API_BASE_URL
@@ -136,7 +138,6 @@ async function fetchUserCollections(userId) {
 onMounted(async () => {
     if (!process.client) return
 
-    const userId = localStorage.getItem('id')
     if (!userId) {
         console.warn('User ID not found in localStorage')
         return
