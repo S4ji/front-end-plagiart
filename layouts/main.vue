@@ -1,11 +1,6 @@
-<script setup>
-import { useAuth } from '@/composables/useAuth'
-const { isLoggedIn } = useAuth()
-</script>
-
 <template>
-    <Navbarunlogged v-if="!isLoggedIn.value" />
-    <Navbar v-else />
+    <Navbar />
     <slot />
     <Footer />
 </template>
+<script setup></script>

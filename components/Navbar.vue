@@ -1,153 +1,77 @@
+<script setup>
+import { ref, computed, watchEffect } from 'vue'
+import { useAuth } from '@/composables/useAuth'
+
+const { userId, isLoggedIn, logout } = useAuth()
+
+const open = ref(false)
+const searchTerm = ref('')
+const myArray = ['chat', 'chien', 'ours', 'loup', 'renard', 'Malabar']
+
+const menuitems = computed(() => {
+    const base = [{ title: 'Parcourir', path: '/parcourir' }]
+
+    if (isLoggedIn.value) {
+        base.push({ title: 'Publier', path: '/publier' })
+        base.push({
+            title: 'Profil',
+            path: `/profile/${userId.value}`,
+        })
+        base.push({ title: 'Déconnexion', action: 'logout' })
+    } else {
+        base.push({ title: 'Inscription', path: '/inscription' })
+        base.push({ title: 'Connexion', path: '/login' })
+    }
+
+    return base
+})
+
+function handleClick(item) {
+    if (item.action === 'logout') {
+        logout()
+        window.location.href = '/'
+    }
+}
+</script>
+
 <template>
     <Container>
-        <header :class="headerClass">
-            <!-- Logo -->
-            <div :class="logoWrapperClass">
-                <a href="/" :class="logoLinkClass">
+        <header
+            class="flex flex-col lg:flex-row justify-between items-center my-5"
+        >
+            <div class="flex w-full lg:w-auto items-center justify-between">
+                <a href="/" class="text-lg cursor-pointer">
                     <span class="font-bold">Plag</span><span>'iar</span
                     ><span>ist</span>
                 </a>
-                <div :class="navToggleClass">
-                    <button @click="open = !open" :class="burgerButtonClass">
+                <div class="block lg:hidden">
+                    <button @click="open = !open" class="cursor-pointer">
                         ☰
                     </button>
                 </div>
             </div>
 
-            <!-- Barre de recherche -->
             <div class="flex justify-center items-center gap-5">
                 <SearchBar v-model="searchTerm" :items="myArray" />
             </div>
 
-            <!-- Navigation -->
-            <nav :class="[open ? 'block' : 'hidden', navWrapperClass]">
-                <ul :class="navListClass">
-                    <li
-                        v-for="item in menuitems"
-                        :key="item.title"
-                        class="relative"
-                        @mouseenter="openDropdown = item.title"
-                        @mouseleave="openDropdown = null"
-                    >
-                        <a :href="item.path" :class="navItemLinkClass">{{
-                            item.title
-                        }}</a>
-
-                        <!-- Dropdown niveau 1 -->
-                        <ul
-                            v-if="item.children && openDropdown === item.title"
-                            :class="dropdownClass"
+            <nav
+                :class="{ block: open, hidden: !open }"
+                class="w-full lg:w-auto mt-2 lg:flex lg:mt-0"
+            >
+                <ul class="flex flex-col lg:flex-row lg:gap-3">
+                    <li v-for="item in menuitems" :key="item.title">
+                        <component
+                            :is="item.action ? 'button' : 'a'"
+                            :href="item.path"
+                            @click="handleClick(item)"
+                            class="flex lg:px-3 py-2 text-brown-600 hover:text-[#94775a] transition-colors duration-200"
                         >
-                            <li
-                                v-for="child in item.children"
-                                :key="child.title"
-                                class="relative"
-                                @mouseenter="openSubDropdown = child.title"
-                                @mouseleave="openSubDropdown = null"
-                            >
-                                <component
-                                    :is="
-                                        child.title === 'Déconnexion'
-                                            ? 'button'
-                                            : 'a'
-                                    "
-                                    :href="
-                                        child.title !== 'Déconnexion'
-                                            ? child.path
-                                            : null
-                                    "
-                                    :class="dropdownLinkClass"
-                                    @click="
-                                        child.title === 'Déconnexion' &&
-                                            handleAction(child)
-                                    "
-                                >
-                                    {{ child.title }}
-                                </component>
-
-                                <!-- Dropdown niveau 2 -->
-                                <ul
-                                    v-if="
-                                        child.children &&
-                                        openSubDropdown === child.title
-                                    "
-                                    :class="subDropdownClass"
-                                >
-                                    <li
-                                        v-for="subChild in child.children"
-                                        :key="subChild.title"
-                                    >
-                                        <a
-                                            :href="subChild.path"
-                                            :class="subDropdownLinkClass"
-                                            >{{ subChild.title }}</a
-                                        >
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
+                            {{ item.title }}
+                        </component>
                     </li>
                 </ul>
             </nav>
         </header>
     </Container>
 </template>
-
-<script setup>
-import { ref, computed } from 'vue'
-import { useAuth } from '@/composables/useAuth'
-
-const { userId, logout } = useAuth()
-
-const searchTerm = ref('')
-const open = ref(false)
-const openDropdown = ref(null)
-const openSubDropdown = ref(null)
-
-const menuitems = computed(() => [
-    { title: 'Parcourir', path: '/searchpage' },
-    { title: 'Publier', path: '/publier' },
-    {
-        title: 'Profil',
-        path: '/userprofileedit',
-        children: [
-            ...(userId.value
-                ? [
-                      {
-                          title: 'Mes Informations',
-                          path: `/profile/${userId.value}`,
-                      },
-                  ]
-                : []),
-            { title: 'Déconnexion', path: '/' },
-        ],
-    },
-])
-
-const myArray = ['chat', 'chien', 'ours', 'loup', 'renard', 'Malabar']
-
-function handleAction(item) {
-    if (item.title === 'Déconnexion') {
-        logout()
-        window.location.href = '/'
-    }
-}
-
-// classes (non répétées ici pour lisibilité)
-const textHoverBase = 'transition-colors duration-200 cursor-pointer'
-const dropdownContainer = 'absolute bg-white border rounded shadow-md z-10'
-
-const headerClass =
-    'flex flex-col lg:flex-row justify-between items-center my-5'
-const logoWrapperClass = 'flex w-full lg:w-auto items-center justify-between'
-const logoLinkClass = 'text-lg cursor-pointer'
-const navToggleClass = 'block lg:hidden'
-const burgerButtonClass = 'cursor-pointer'
-const navWrapperClass = 'w-full lg:w-auto mt-2 lg:flex lg:mt-0'
-const navListClass = 'flex flex-col lg:flex-row lg:gap-3'
-const navItemLinkClass = `flex lg:px-3 py-2 text-brown-600 hover:text-brown-900 hover:text-gray-300 rounded ${textHoverBase}`
-const dropdownClass = `${dropdownContainer} left-0 top-full lg:min-w-[200px]`
-const dropdownLinkClass = `block px-4 py-2 text-brown-600 hover:text-[#94775a] hover:bg-brown-600 ${textHoverBase}`
-const subDropdownClass = `${dropdownContainer} left-full top-0 lg:min-w-[200px]`
-const subDropdownLinkClass = `block px-4 py-2 text-brown-600 hover:text-white hover:bg-brown-600 ${textHoverBase}`
-</script>

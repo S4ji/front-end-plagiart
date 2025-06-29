@@ -1,3 +1,39 @@
+<script setup>
+import { ref, computed, watchEffect } from 'vue'
+import { useAuth } from '@/composables/useAuth'
+
+const { userId, isLoggedIn, logout } = useAuth()
+
+const open = ref(false)
+const searchTerm = ref('')
+const myArray = ['chat', 'chien', 'ours', 'loup', 'renard', 'Malabar']
+
+const menuitems = computed(() => {
+    const base = [{ title: 'Parcourir', path: '/parcourir' }]
+
+    if (isLoggedIn.value) {
+        base.push({ title: 'Publier', path: '/publier' })
+        base.push({
+            title: 'Profil',
+            path: `/profile/${userId.value}`,
+        })
+        base.push({ title: 'Déconnexion', action: 'logout' })
+    } else {
+        base.push({ title: 'Inscription', path: '/inscription' })
+        base.push({ title: 'Connexion', path: '/login' })
+    }
+
+    return base
+})
+
+function handleClick(item) {
+    if (item.action === 'logout') {
+        logout()
+        window.location.href = '/'
+    }
+}
+</script>
+
 <template>
     <Container>
         <header
@@ -25,29 +61,17 @@
             >
                 <ul class="flex flex-col lg:flex-row lg:gap-3">
                     <li v-for="item in menuitems" :key="item.title">
-                        <a
+                        <component
+                            :is="item.action ? 'button' : 'a'"
                             :href="item.path"
+                            @click="handleClick(item)"
                             class="flex lg:px-3 py-2 text-brown-600 hover:text-[#94775a] transition-colors duration-200"
                         >
                             {{ item.title }}
-                        </a>
+                        </component>
                     </li>
                 </ul>
             </nav>
         </header>
     </Container>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-
-const open = ref(false)
-const searchTerm = ref('')
-const myArray = ['chat', 'chien', 'ours', 'loup', 'renard', 'Malabar']
-
-const menuitems = [
-    { title: 'Parcourir', path: '/parcourir' },
-    { title: 'Inscription', path: '/inscription' },
-    { title: 'Connexion', path: '/login' },
-]
-</script>
