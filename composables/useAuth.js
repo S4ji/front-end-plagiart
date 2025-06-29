@@ -43,5 +43,3 @@ function logout() {
     localStorage.removeItem('id')
     isLoggedIn.value = false
 }
-
-exp
