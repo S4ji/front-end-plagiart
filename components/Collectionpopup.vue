@@ -91,7 +91,7 @@ async function addCollection() {
     const payload = {
         nom: trimmed,
         description: '', // ou tu peux permettre une saisie de description
-        id_utilisateur: userId,
+        id_utilisateur: userId.value,
     }
 
     try {
