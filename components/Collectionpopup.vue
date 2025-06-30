@@ -25,7 +25,7 @@
                     :class="inputClass"
                     @keyup.enter="addCollection"
                 />
-                <button @click="addCollection" :class="buttonClass">Add</button>
+                <Button @click="addCollection" :styleName="primary">Add</Button>
             </div>
         </div>
     </div>

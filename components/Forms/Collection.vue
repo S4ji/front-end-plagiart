@@ -37,8 +37,7 @@ const formData = ref({
     description: '',
 })
 
-// Replace this with your actual way to get the logged user ID
-const userId = localStorage.getItem('id') // example user ID
+const userId = localStorage.getItem('id')
 console.log('userid', userId)
 
 const handleSubmit = async () => {
@@ -72,14 +71,10 @@ const handleSubmit = async () => {
     }
 }
 
-// Tailwind class vars (leave as-is)
-const containerClass = 'max-w-2xl mx-auto p-4'
 const formClass = 'space-y-4'
 const labelClass = 'block text-sm font-semibold'
 const inputClass =
     'mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
 </script>
 
-<style scoped>
-/* Ajoute ici des styles CSS personnalisés si nécessaire */
-</style>
+<style scoped></style>

@@ -34,6 +34,4 @@ const handleSubmit = () => {
 }
 </script>
 
-<style scoped>
-/* Ajoute ton style ici */
-</style>
+<style scoped></style>
