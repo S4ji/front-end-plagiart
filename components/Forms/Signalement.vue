@@ -31,7 +31,6 @@ const router = useRouter()
 const config = useRuntimeConfig()
 const API_URL = config.public.API_BASE_URL
 
-// En JS pur, on utilise defineProps sans typage
 const props = defineProps(['idOeuvre'])
 
 console.log('userId:', userId)
@@ -49,7 +48,7 @@ const inputClass =
 
 const handleSubmit = async () => {
     const payload = {
-        id_utilisateur: userId,
+        id_utilisateur: userId.value,
         id_oeuvre: Number(props.idOeuvre),
         raison: formData.value.raison,
     }
