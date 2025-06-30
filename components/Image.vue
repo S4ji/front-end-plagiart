@@ -52,8 +52,9 @@ import { useAuth } from '@/composables/useAuth'
 const { userId, logout } = useAuth()
 
 const currentUserId = userId
-const isOwner = computed(() => currentUserId === props.ownerId)
-
+const isOwner = computed(() => {
+    return userId.value === props.ownerId
+})
 const props = defineProps({
     image: Object,
     isRemovable: Boolean,
