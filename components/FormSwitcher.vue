@@ -138,12 +138,12 @@ async function fetchUserCollections(userId) {
 onMounted(async () => {
     if (!process.client) return
 
-    if (!userId) {
+    if (!userId.value) {
         console.warn('User ID not found in localStorage')
         return
     }
 
-    userOeuvres.value = await fetchUserOeuvres(userId)
-    userCollections.value = await fetchUserCollections(userId)
+    userOeuvres.value = await fetchUserOeuvres(userId.value)
+    userCollections.value = await fetchUserCollections(userId.value)
 })
 </script>
