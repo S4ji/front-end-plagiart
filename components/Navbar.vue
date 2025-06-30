@@ -67,7 +67,7 @@ const searchContainerClass = 'flex justify-center items-center gap-5'
 const navClass = 'w-full lg:w-auto mt-2 lg:flex lg:mt-0'
 const navListClass = 'flex flex-col lg:flex-row lg:gap-3'
 const navLinkClass =
-    'flex lg:px-3 py-2 text-brown-600 hover:text-[#94775a] transition-colors duration-200'
+    'flex lg:px-3 py-2 text-brown-600 hover:text-slate-900 transition-colors duration-200'
 
 const menuitems = computed(() => {
     const base = [{ title: 'Parcourir', path: '/parcourir' }]

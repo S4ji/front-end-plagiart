@@ -51,7 +51,7 @@ import { useAuth } from '@/composables/useAuth'
 
 const { userId, logout } = useAuth()
 
-const currentUserId = userId
+const currentUserId = userId.value
 const isOwner = computed(() => {
     return userId.value === props.ownerId
 })
