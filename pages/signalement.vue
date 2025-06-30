@@ -1,7 +1,6 @@
 <template>
     <div :class="wrapperClass">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-            <!-- Image -->
             <div>
                 <img
                     :src="piece.image"
@@ -13,7 +12,6 @@
                 </h3>
             </div>
 
-            <!-- Signalement Form -->
             <div>
                 <h2 :class="sectionTitleClass">Formulaire de signalement</h2>
                 <ClientOnly

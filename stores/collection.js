@@ -5,7 +5,6 @@ import { useRuntimeConfig } from '#imports'
 export const useCollectionStore = defineStore('collection', () => {
     const config = useRuntimeConfig()
     const API_URL = config.public.API_BASE_URL
-    // Current viewed collection (detailed)
     const currentCollection = ref({
         id: null,
         nom: 'Chargement...',
@@ -15,10 +14,8 @@ export const useCollectionStore = defineStore('collection', () => {
         relatedCollections: [],
     })
 
-    // User's collection list (for popup)
     const collections = ref([])
 
-    // Flag to trigger refresh in components
     const refreshFlag = ref(0)
 
     function setCollection(data) {
@@ -29,7 +26,7 @@ export const useCollectionStore = defineStore('collection', () => {
             images: data.images,
             suggestions: data.suggestions,
             relatedCollections: data.relatedCollections,
-            userId: data.id_utilisateur, // ← ICI
+            userId: data.id_utilisateur,
         }
     }
 
@@ -49,11 +46,10 @@ export const useCollectionStore = defineStore('collection', () => {
             images: [],
             suggestions: [],
             relatedCollections: [],
-            userId: null, // ← ICI aussi
+            userId: null,
         }
     }
 
-    // Increment this to notify watchers to refresh
     function notifyRefresh() {
         refreshFlag.value++
     }

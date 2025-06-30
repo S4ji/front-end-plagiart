@@ -1,7 +1,6 @@
 <template>
     <Container>
         <div class="my-8">
-            <!-- Tab buttons -->
             <div class="flex justify-center gap-4 mb-6">
                 <Button
                     v-for="option in resultTypes"
@@ -16,7 +15,6 @@
                 </Button>
             </div>
 
-            <!-- Œuvres tab -->
             <div v-if="selectedType === 'oeuvre'">
                 <Searchsection v-if="oeuvres.length">
                     <template #title>Œuvres</template>
@@ -27,7 +25,6 @@
                 </p>
             </div>
 
-            <!-- Collections tab -->
             <div v-if="selectedType === 'collection'">
                 <Searchsection v-if="collections.length">
                     <template #title>Collections</template>

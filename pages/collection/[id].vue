@@ -1,6 +1,5 @@
 <template>
     <div class="p-6">
-        <!-- Collection Title -->
         <div class="mb-6">
             <h1 :class="titleClass">
                 {{ collectionStore.currentCollection.nom }}
@@ -37,7 +36,6 @@
         >
             <h2 :class="sectionTitle">Suggestions similaires</h2>
             <div :class="gridClass">
-                <!-- Suggestions images WITHOUT removal button -->
                 <div
                     v-for="(suggestion, index) in collectionStore
                         .currentCollection.suggestions"

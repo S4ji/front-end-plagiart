@@ -48,7 +48,6 @@ const fetchOeuvres = async (pageNum) => {
         return []
     }
     const data = await res.json()
-    // map into the same format your Index page uses (flat array of {id, src, width, height})
     console.log(
         `Requête envoyée à l’API — Page: ${pageNum}, Query: ${store.query}`
     )
@@ -99,8 +98,6 @@ watch(
     { immediate: true }
 )
 
-// --- Register directive programmatically ---
-
 const instance = getCurrentInstance()
 
 instance.appContext.app.directive('intersect', {
@@ -110,7 +107,6 @@ instance.appContext.app.directive('intersect', {
         })
         observer.observe(el)
 
-        // Save observer instance on element so we can clean up later
         el._observer = observer
     },
     unmounted(el) {

@@ -1,7 +1,6 @@
 <template>
     <Container>
         <div :class="containerClass">
-            <!-- Menu de navigation du backoffice -->
             <div :class="menuWrapperClass">
                 <Button
                     v-for="section in sectionList"
@@ -17,7 +16,6 @@
             </div>
 
             <div>
-                <!-- Signalements -->
                 <div v-if="selectedSection === 'signalements'">
                     <h2>Signalements</h2>
                     <ul class="space-y-2">
@@ -88,7 +86,6 @@
                     </ul>
                 </div>
 
-                <!-- Utilisateurs -->
                 <div v-else-if="selectedSection === 'utilisateurs'">
                     <h2>Utilisateurs</h2>
                     <ul class="space-y-2">
@@ -116,7 +113,6 @@
                     </ul>
                 </div>
 
-                <!-- Oeuvres -->
                 <div v-else-if="selectedSection === 'oeuvres'">
                     <h2>Oeuvres</h2>
                     <ul class="space-y-2">
@@ -160,7 +156,6 @@
                     </ul>
                 </div>
 
-                <!-- État vide -->
                 <p v-else :class="emptyStateClass">
                     Choisissez une section à afficher.
                 </p>
@@ -250,7 +245,6 @@ const updateSignalementStatus = async (id, statut) => {
     }
 }
 
-// Suppression d’un signalement
 const deleteSignalement = async (id) => {
     try {
         const response = await fetch(`${API_URL}/signalements/${id}`, {
@@ -267,7 +261,6 @@ const deleteSignalement = async (id) => {
     }
 }
 
-// Suppression d’un utilisateur
 const deleteUtilisateur = async (id) => {
     try {
         const response = await fetch(`${API_URL}/utilisateurs/${id}`, {
@@ -284,7 +277,6 @@ const deleteUtilisateur = async (id) => {
     }
 }
 
-// Suppression d’une œuvre
 const deleteOeuvre = async (id) => {
     try {
         const response = await fetch(`${API_URL}/oeuvres/${id}`, {
@@ -298,7 +290,6 @@ const deleteOeuvre = async (id) => {
     }
 }
 
-// Centralisation de l’action de suppression
 const deleteItem = (type, id) => {
     const confirmed = window.confirm(
         `Êtes-vous sûr de vouloir supprimer ce ${type} ?`

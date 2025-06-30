@@ -1,7 +1,6 @@
 <template>
     <Container>
         <header :class="headerClass">
-            <!-- Logo -->
             <div :class="logoContainerClass">
                 <NuxtLink to="/" :class="logoClass">
                     <span class="font-bold">Plag</span><span>'iar</span
@@ -14,12 +13,10 @@
                 </div>
             </div>
 
-            <!-- Barre de recherche -->
             <div :class="searchContainerClass">
                 <SearchBar v-model="searchTerm" :items="myArray" />
             </div>
 
-            <!-- Navigation -->
             <nav :class="[navClass, { block: open, hidden: !open }]">
                 <ul :class="navListClass">
                     <li v-for="item in menuitems" :key="item.title">
@@ -56,7 +53,6 @@ const open = ref(false)
 const searchTerm = ref('')
 const myArray = ['chat', 'chien', 'ours', 'loup', 'renard', 'Malabar']
 
-// CSS classes centralisées
 const headerClass =
     'flex flex-col lg:flex-row justify-between items-center my-5'
 const logoContainerClass = 'flex w-full lg:w-auto items-center justify-between'

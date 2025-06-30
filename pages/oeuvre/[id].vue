@@ -1,6 +1,5 @@
 <template>
     <div :class="wrapperClass">
-        <!-- Main Oeuvre Image with Overlay Button -->
         <div :class="sectionSpacing">
             <div class="flex justify-center">
                 <div class="relative inline-block group">
@@ -14,7 +13,6 @@
                         :name="oeuvre.artiste.nom"
                     />
 
-                    <!-- Overlay button -->
                     <div
                         class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-10"
                     >
@@ -29,7 +27,6 @@
             </div>
         </div>
 
-        <!-- Action buttons -->
         <div :class="buttonGroupClass">
             <Button @click="createLike" :size="'md'">Liker</Button>
             <Button
@@ -40,13 +37,11 @@
                 Signaler
             </Button>
         </div>
-        <!-- Related collections -->
 
         <div class="mt-12" v-if="relatedCollections.length > 0">
             <h2 :class="sectionTitleClass">Collections associées</h2>
             <ImageGallery :images="relatedCollections" />
         </div>
-        <!-- Suggestions d’œuvres similaires -->
         <div class="mt-12" v-if="relatedImages.length > 0">
             <h2 :class="sectionTitleClass">Œuvres similaires</h2>
             <div :class="galleryGridClass">
@@ -59,7 +54,6 @@
             </div>
         </div>
 
-        <!-- Collection Popup Component -->
         <Collectionpopup ref="collectionPopup" />
     </div>
 </template>
@@ -109,10 +103,9 @@ async function fetchCollectionsByOeuvre(oeuvreId, page = 1, pageSize = 6) {
 
         const data = await response.json()
 
-        // Transform into array of image sets for component
         const formatted = data.collections.map((collection) => {
             return collection.image.map((url, index) => ({
-                id: index === 0 ? collection.id_collection : undefined, // Only add id on the first image for routing
+                id: index === 0 ? collection.id_collection : undefined,
                 src: url,
                 alt: `Image ${index + 1}`,
             }))
@@ -140,9 +133,8 @@ async function fetchSuggestionsForOeuvre(oeuvreId, limit = 10) {
         const data = await response.json()
         console.log('data', data)
 
-        // Convert to array of images for display
         return data
-            .filter((item) => item.image) // only include those with images
+            .filter((item) => item.image)
             .map((item, index) => ({
                 id: item.id_oeuvre || `suggestion-${index}`,
                 src: item.image,
@@ -225,7 +217,6 @@ async function createLike() {
     }
 }
 
-// CSS classes for styling
 const wrapperClass = 'p-6'
 const sectionSpacing = 'mb-6'
 const sectionTitleClass = 'text-xl font-semibold mb-4'

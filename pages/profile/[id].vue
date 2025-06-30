@@ -1,7 +1,6 @@
 <template>
     <Container>
         <div :class="containerClass">
-            <!-- Profil utilisateur -->
             <div class="text-center mb-8">
                 <img
                     src="https://via.placeholder.com/150"
@@ -13,7 +12,6 @@
                 </h2>
             </div>
 
-            <!-- Œuvres de l'utilisateur -->
             <h2 :class="sectionTitleClass">Oeuvres</h2>
             <div :class="gridWrapperClass">
                 <div
@@ -29,7 +27,6 @@
                 </div>
             </div>
 
-            <!-- Collections de l'utilisateur -->
             <h2 :class="sectionTitleClass">Collections</h2>
             <div v-if="userCollections.length > 0">
                 <ImageGallery :images="userCollections || []" />
@@ -52,16 +49,13 @@ definePageMeta({
     layout: 'main',
 })
 
-// --- Route ---
 const route = useRoute()
 const userId = route.params.id
 
-// --- UI state ---
 const utilisateur = ref(null)
 const userOeuvres = ref([])
 const userCollections = ref([])
 
-// --- Tailwind classes centralisées ---
 const containerClass = 'my-8'
 const sectionTitleClass = 'text-2xl font-semibold text-center mt-8 mb-4'
 const gridWrapperClass =
@@ -69,7 +63,6 @@ const gridWrapperClass =
 const imageCardClass =
     'relative group w-full border rounded-xl p-4 shadow hover:shadow-lg transition'
 
-// --- Requêtes API ---
 async function fetchUserOeuvres(userId) {
     try {
         const res = await fetch(`${API_URL}/oeuvres/user/${userId}`)
@@ -145,7 +138,6 @@ async function fetchUtilisateurById(id) {
     }
 }
 
-// --- Lifecycle ---
 onMounted(async () => {
     userOeuvres.value = await fetchUserOeuvres(userId)
     userCollections.value = await fetchUserCollections(userId)

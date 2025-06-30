@@ -1,6 +1,5 @@
 <template>
     <div :class="wrapperClass">
-        <!-- Full-width main image -->
         <div :class="sectionSpacing">
             <img
                 :src="piece.image"
@@ -9,7 +8,6 @@
             />
         </div>
 
-        <!-- Buttons (Like + Signaler) side by side -->
         <div :class="buttonGroupClass">
             <Button :size="'md'" :class="likeButtonClass">Liker</Button>
             <Button :size="'md'" :class="reportButtonClass">Signaler</Button>
@@ -18,7 +16,6 @@
             </Button>
         </div>
 
-        <!-- Related images gallery -->
         <div :class="sectionSpacing">
             <h2 :class="sectionTitleClass">Images associées</h2>
             <div :class="galleryGridClass">
@@ -36,10 +33,8 @@
             </div>
         </div>
 
-        <!-- Related collection section -->
         <div class="mt-12">
             <h2 :class="sectionTitleClass">Collections associées</h2>
-            <!-- Replace this with your actual component -->
             <div :class="placeholderComponentClass">
                 [ Galerie de collections associées ]
             </div>

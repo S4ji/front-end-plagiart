@@ -3,7 +3,6 @@
         <ClientOnly>
             <div :class="sectionSpacing">
                 <div :class="gridWrapperClass">
-                    <!-- Image à gauche -->
                     <div :class="imageContainerClass">
                         <Image
                             v-if="loaded && oeuvreData?.image"
@@ -17,7 +16,6 @@
                         />
                     </div>
 
-                    <!-- Formulaire à droite -->
                     <div :class="formContainerClass">
                         <div
                             v-if="loaded && oeuvreData"
