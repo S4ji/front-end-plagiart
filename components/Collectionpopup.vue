@@ -57,7 +57,7 @@ async function fetchCollectionsByUser() {
     }
 
     try {
-        const res = await fetch(`${API_URL}/collections/user/${userId}`)
+        const res = await fetch(`${API_URL}/collections/user/${userId.value}`)
         if (!res.ok) throw new Error('Failed to fetch collections')
         const data = await res.json()
         collectionStore.setCollections(data) // update store here!
