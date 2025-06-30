@@ -136,13 +136,7 @@ async function fetchUserCollections(userId) {
 
 // --- Lifecycle ---
 onMounted(async () => {
-    if (!process.client) return
-
-    if (!userId.value) {
-        console.warn('User ID not found in localStorage')
-        return
-    }
-
+    console.log(userId)
     userOeuvres.value = await fetchUserOeuvres(userId.value)
     userCollections.value = await fetchUserCollections(userId.value)
 })
