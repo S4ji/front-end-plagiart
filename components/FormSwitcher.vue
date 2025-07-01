@@ -45,11 +45,12 @@
                     <h2 :class="sectionTitleClass">Vos collections</h2>
                     <div :class="gridWrapperClass">
                         <div
-                            v-for="collection in validCollections"
+                            v-for="collection in userCollections"
                             :key="collection.id"
                             :class="imageCardClass"
                         >
-                            <ImageGallery :images="[...collection.images]" />
+                            <ImageGallery :images="userCollections || []" />
+
                             <h3
                                 class="mt-2 text-center text-sm font-medium text-gray-700"
                             >
@@ -139,19 +140,20 @@ async function fetchUserCollections(userId) {
 
         return data
             .filter(
-                (item) => Array.isArray(item.image) && item.image.length > 0
+                (item) =>
+                    item.image &&
+                    Array.isArray(item.image) &&
+                    item.image.length > 0
             )
-            .map((item) => ({
-                id: item.id_collection,
-                title: item.nom,
-                images: [
-                    ...item.image.filter(Boolean).map((src, index) => ({
-                        id: item.id_collection,
-                        src,
-                        alt: `Image ${index + 1} de ${item.nom}`,
-                    })),
-                ],
-            }))
+            .map((item) =>
+                item.image.map((src, index) => ({
+                    id: `${item.id_collection}`,
+                    src,
+                    alt: `Image ${index + 1} of collection ${
+                        item.id_collection
+                    }`,
+                }))
+            )
     } catch (error) {
         console.error('Error fetching collections:', error)
         return []
