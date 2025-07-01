@@ -64,7 +64,7 @@ const imageCardClass =
 
 async function fetchUserOeuvres(currentUserId) {
     try {
-        const res = await fetch(`${API_URL}/oeuvres/user/${userId}`)
+        const res = await fetch(`${API_URL}/oeuvres/user/${currentUserId}`)
         if (!res.ok) throw new Error('Failed to fetch œuvres')
 
         const data = await res.json()
