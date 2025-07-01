@@ -231,17 +231,15 @@ onMounted(() => {
 
 const updateSignalementStatus = async (id, statut) => {
     try {
-        const response = await fetch(`${API_URL}/signalements/${id}`, {
+        const response = await fetch(`${API_URL}/signalements/update`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ statut }),
+            body: JSON.stringify({ id_signalement: id, statut }),
         })
         if (!response.ok) throw new Error('Erreur de mise à jour')
         console.log('Statut mis à jour pour le signalement', id)
-
-        // 🔁 Recharge les données à jour
         await fetchSignalements()
     } catch (error) {
         console.error('Erreur lors de la mise à jour du statut:', error)
