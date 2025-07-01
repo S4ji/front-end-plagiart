@@ -133,7 +133,7 @@ async function fetchUserOeuvres(userId) {
 // Requête collections
 async function fetchUserCollections(userId) {
     try {
-        const res = await fetch(`${API_URL}/collections/user/${userId}`)
+        const res = await fetch(`${API_URL}/collections/user/${currentUserId}`)
         if (!res.ok) throw new Error('Failed to fetch collections')
 
         const data = await res.json()
