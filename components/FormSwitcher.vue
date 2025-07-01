@@ -46,10 +46,10 @@
                     <div :class="gridWrapperClass">
                         <div
                             v-for="collection in userCollections"
-                            :key="collection.id"
+                            :key="collection.images[0]?.id || collection.title"
+                            :class="imageCardClass"
                         >
-                            <ImageGallery :images="userCollections || []" />
-
+                            <ImageGallery :images="[...collection.images]" />
                             <h3
                                 class="mt-2 text-center text-sm font-medium text-gray-700"
                             >
