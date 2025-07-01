@@ -83,6 +83,7 @@ async function fetchCollection(id) {
             nom: data.nom,
             description: data.description || '',
             userId: data.id_utilisateur,
+            images: data.images || [], // 👈 ajoute cette ligne
         }
 
         loaded.value = true
