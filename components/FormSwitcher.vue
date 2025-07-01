@@ -47,7 +47,6 @@
                         <div
                             v-for="collection in userCollections"
                             :key="collection.id"
-                            :class="imageCardClass"
                         >
                             <ImageGallery :images="userCollections || []" />
 
@@ -145,15 +144,14 @@ async function fetchUserCollections(userId) {
                     Array.isArray(item.image) &&
                     item.image.length > 0
             )
-            .map((item) =>
-                item.image.map((src, index) => ({
-                    id: `${item.id_collection}`,
+            .map((item) => ({
+                title: item.nom,
+                images: item.image.map((src, index) => ({
+                    id: `${item.id_collection}-${index}`,
                     src,
-                    alt: `Image ${index + 1} of collection ${
-                        item.id_collection
-                    }`,
-                }))
-            )
+                    alt: `Image ${index + 1} of collection ${item.nom}`,
+                })),
+            }))
     } catch (error) {
         console.error('Error fetching collections:', error)
         return []
