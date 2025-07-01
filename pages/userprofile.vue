@@ -20,10 +20,9 @@
                     :class="imageCardClass"
                 >
                     <Image
-                        :showAddButton="false"
                         :image="image"
-                        :isEditable="false"
                         :ownerId="currentUserId"
+                        :isEditable="true"
                     />
                 </div>
             </div>
