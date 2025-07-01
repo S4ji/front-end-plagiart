@@ -9,11 +9,23 @@
                     :key="collection.id_collection"
                     :class="
                         listItemClass +
-                        ' cursor-pointer hover:text-blue-600 transition'
+                        ' flex justify-between items-center group'
                     "
-                    @click="onCollectionClick(collection)"
                 >
-                    {{ collection.nom }}
+                    <span
+                        class="cursor-pointer hover:text-blue-600 transition"
+                        @click="onCollectionClick(collection)"
+                    >
+                        {{ collection.nom }}
+                    </span>
+
+                    <button
+                        class="text-red-600 opacity-0 group-hover:opacity-100 transition ml-2 text-sm"
+                        title="Supprimer la collection"
+                        @click.stop="deleteCollection(collection.id_collection)"
+                    >
+                        ✕
+                    </button>
                 </li>
             </ul>
 
@@ -25,7 +37,9 @@
                     :class="inputClass"
                     @keyup.enter="addCollection"
                 />
-                <Button @click="addCollection" :styleName="primary">Add</Button>
+                <Button @click="addCollection" :styleName="'primary'"
+                    >Add</Button
+                >
             </div>
         </div>
     </div>
@@ -36,20 +50,17 @@ import { ref, computed } from 'vue'
 import { useCollectionStore } from '@/stores/collection'
 import { useAuth } from '@/composables/useAuth'
 
-const { userId, logout } = useAuth()
+const { userId } = useAuth()
 const isVisible = ref(false)
 const newCollection = ref('')
 const currentOeuvreId = ref(null)
 
 const collectionStore = useCollectionStore()
-
-// Computed to unwrap the reactive collections ref from store
 const collections = computed(() => collectionStore.collections)
 
 const config = useRuntimeConfig()
 const API_URL = config.public.API_BASE_URL
 
-// Fetch collections from API and update store
 async function fetchCollectionsByUser() {
     if (!userId) {
         console.error('User ID not found in localStorage')
@@ -60,7 +71,7 @@ async function fetchCollectionsByUser() {
         const res = await fetch(`${API_URL}/collections/user/${userId.value}`)
         if (!res.ok) throw new Error('Failed to fetch collections')
         const data = await res.json()
-        collectionStore.setCollections(data) // update store here!
+        collectionStore.setCollections(data)
     } catch (err) {
         console.error('Error fetching collections by user:', err)
     }
@@ -76,7 +87,7 @@ function hide() {
     isVisible.value = false
     currentOeuvreId.value = null
     newCollection.value = ''
-    collectionStore.clearCollections() // clear collections from store on hide
+    collectionStore.clearCollections()
 }
 
 async function addCollection() {
@@ -90,7 +101,7 @@ async function addCollection() {
 
     const payload = {
         nom: trimmed,
-        description: '', // ou tu peux permettre une saisie de description
+        description: '',
         id_utilisateur: userId.value,
     }
 
@@ -126,13 +137,26 @@ async function onCollectionClick(collection) {
         })
         if (!res.ok) throw new Error('Failed to add to collection')
 
-        // Notify to refresh collection data elsewhere
         collectionStore.notifyRefresh()
-
         console.log('Oeuvre added to collection:', collection.nom)
         hide()
     } catch (error) {
         console.error('Error adding to collection:', error)
+    }
+}
+
+async function deleteCollection(id_collection) {
+    if (!confirm('Supprimer cette collection ?')) return
+
+    try {
+        const res = await fetch(`${API_URL}/collections/${id_collection}`, {
+            method: 'DELETE',
+        })
+        if (!res.ok) throw new Error('Erreur lors de la suppression')
+
+        await fetchCollectionsByUser()
+    } catch (err) {
+        console.error('Erreur suppression collection:', err)
     }
 }
 
