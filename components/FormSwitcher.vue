@@ -52,9 +52,7 @@
                             <ImageGallery :images="collection.images" />
                             <h3
                                 class="mt-2 text-center text-sm font-medium text-gray-700"
-                            >
-                                {{ collection.title }}
-                            </h3>
+                            ></h3>
                         </div>
                     </div>
                 </div>
