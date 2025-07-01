@@ -22,7 +22,7 @@
                     <Image
                         :image="image"
                         :isEditable="false"
-                        :ownerId="userId"
+                        :ownerId="currentUserId"
                     />
                 </div>
             </div>
@@ -50,7 +50,7 @@ definePageMeta({
 })
 
 const route = useRoute()
-const userId = route.params.id
+const currentUserId = route.params.id
 
 const userOeuvres = ref([])
 const userCollections = ref([])
@@ -62,7 +62,7 @@ const gridWrapperClass =
 const imageCardClass =
     'relative group w-full border rounded-xl p-4 shadow hover:shadow-lg transition'
 
-async function fetchUserOeuvres(userId) {
+async function fetchUserOeuvres(currentUserId) {
     try {
         const res = await fetch(`${API_URL}/oeuvres/user/${userId}`)
         if (!res.ok) throw new Error('Failed to fetch œuvres')
@@ -86,9 +86,9 @@ async function fetchUserOeuvres(userId) {
     }
 }
 
-async function fetchUserCollections(userId) {
+async function fetchUserCollections(currentUserId) {
     try {
-        const res = await fetch(`${API_URL}/collections/user/${userId}`)
+        const res = await fetch(`${API_URL}/collections/user/${currentUserId}`)
         if (!res.ok) throw new Error('Failed to fetch collections')
 
         const data = await res.json()
@@ -116,7 +116,7 @@ async function fetchUserCollections(userId) {
 }
 
 onMounted(async () => {
-    userOeuvres.value = await fetchUserOeuvres(userId)
-    userCollections.value = await fetchUserCollections(userId)
+    userOeuvres.value = await fetchUserOeuvres(currentUserId)
+    userCollections.value = await fetchUserCollections(currentUserId)
 })
 </script>
