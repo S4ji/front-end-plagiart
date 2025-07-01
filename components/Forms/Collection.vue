@@ -19,55 +19,82 @@
                 ></textarea>
             </label>
 
-            <Button type="submit" block styleName="primary">
-                Créer la collection
+            <Button type="submit" block :styleName="'primary'">
+                {{ isEditing ? 'Mettre à jour' : 'Créer la collection' }}
             </Button>
         </form>
     </Container>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
 const config = useRuntimeConfig()
 const API_URL = config.public.API_BASE_URL
+const router = useRouter()
+
+const props = defineProps({
+    initialCollection: Object,
+    isEditing: Boolean,
+})
+
+const emit = defineEmits(['updated'])
 
 const formData = ref({
     nom: '',
     description: '',
 })
 
-const userId = localStorage.getItem('id')
-console.log('userid', userId)
+onMounted(() => {
+    if (props.isEditing && props.initialCollection) {
+        formData.value.nom = props.initialCollection.nom || ''
+        formData.value.description = props.initialCollection.description || ''
+    }
+})
 
 const handleSubmit = async () => {
-    const payload = {
-        nom: formData.value.nom,
-        description: formData.value.description || '',
-        id_utilisateur: userId,
-    }
-
     try {
-        const res = await fetch(`${API_URL}/collections/new`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload),
-        })
+        if (props.isEditing && props.initialCollection?.id_collection) {
+            // UPDATE
+            const res = await fetch(
+                `${API_URL}/collections/${props.initialCollection.id_collection}`,
+                {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        nom: formData.value.nom,
+                        description: formData.value.description,
+                    }),
+                }
+            )
+            if (!res.ok) throw new Error('Erreur mise à jour')
 
-        if (!res.ok) {
-            throw new Error('Erreur lors de la création de la collection')
+            const updated = await res.json()
+            emit('updated', updated)
+            alert('✅ Collection mise à jour')
+            router.push(`/collection/${updated.id_collection}`)
+        } else {
+            // CREATE
+            const userId = localStorage.getItem('id')
+            const res = await fetch(`${API_URL}/collections/new`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    nom: formData.value.nom,
+                    description: formData.value.description,
+                    id_utilisateur: userId,
+                }),
+            })
+            if (!res.ok) throw new Error('Erreur création')
+            const created = await res.json()
+            alert('✅ Collection créée')
+            formData.value.nom = ''
+            formData.value.description = ''
         }
-
-        const data = await res.json()
-        console.log('Collection créée:', data)
-
-        // Reset form
-        formData.value.nom = ''
-        formData.value.description = ''
-    } catch (error) {
-        console.error('Erreur:', error)
+    } catch (err) {
+        console.error('Erreur formulaire collection:', err)
+        alert('❌ Une erreur est survenue.')
     }
 }
 
@@ -76,5 +103,3 @@ const labelClass = 'block text-sm font-semibold'
 const inputClass =
     'mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
 </script>
-
-<style scoped></style>
