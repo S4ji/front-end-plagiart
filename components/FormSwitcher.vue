@@ -134,7 +134,8 @@ async function fetchUserCollections(userId) {
             .map((item) => ({
                 id: item.id_collection,
                 title: item.nom,
-                images: item.image.map((src, index) => ({
+                images: item.image.slice(0, 3).map((src, index) => ({
+                    id: item.id_collection,
                     src,
                     alt: `Image ${index + 1} de ${item.nom}`,
                 })),
