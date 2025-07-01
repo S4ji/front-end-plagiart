@@ -171,6 +171,4 @@ const listClass = 'space-y-1 text-sm mb-4 max-h-48 overflow-y-auto'
 const listItemClass = 'border-b pb-1'
 const formGroupClass = 'flex gap-2'
 const inputClass = 'border px-2 py-1 text-sm rounded w-full'
-const buttonClass =
-    'bg-blue-600 text-white px-3 py-1 rounded text-sm cursor-pointer'
 </script>
