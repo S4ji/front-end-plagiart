@@ -18,9 +18,6 @@
                                 class="mt-12"
                                 v-if="collectionData?.images?.length"
                             >
-                                <h2 :class="sectionTitle">
-                                    Images de la collection
-                                </h2>
                                 <div class="mt-12" v-if="mappedImages.length">
                                     <h2 :class="sectionTitle">
                                         Images de la collection
