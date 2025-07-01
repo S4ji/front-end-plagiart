@@ -13,6 +13,35 @@
                                 :isEditing="true"
                                 @updated="handleUpdated"
                             />
+                            <!-- Affichage des images de la collection -->
+                            <div
+                                class="mt-12"
+                                v-if="collectionData?.images?.length"
+                            >
+                                <h2 :class="sectionTitle">
+                                    Images de la collection
+                                </h2>
+                                <div :class="gridClass">
+                                    <div
+                                        v-for="(
+                                            image, index
+                                        ) in collectionData.images"
+                                        :key="image.id || image.src + index"
+                                        :class="cardClass"
+                                    >
+                                        <Image
+                                            :image="{
+                                                src: image.src || image.image,
+                                                alt:
+                                                    image.alt ||
+                                                    image.titre ||
+                                                    'Œuvre',
+                                                id: image.id || image.id_oeuvre,
+                                            }"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <p v-else-if="!loaded" :class="loadingClass">
