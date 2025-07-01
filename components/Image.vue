@@ -49,11 +49,6 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'
 
-const { userId } = useAuth()
-
-const isOwner = computed(() => {
-    return userId.value === props.ownerId
-})
 const props = defineProps({
     image: Object,
     isRemovable: Boolean,
@@ -65,6 +60,10 @@ const props = defineProps({
         type: Boolean,
         default: true,
     },
+})
+const { userId } = useAuth()
+const isOwner = computed(() => {
+    return userId.value === props.ownerId
 })
 
 const router = useRouter()
