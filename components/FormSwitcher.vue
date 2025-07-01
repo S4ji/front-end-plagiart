@@ -51,7 +51,7 @@
                             <h3
                                 class="mb-2 text-center text-lg font-semibold text-gray-800"
                             >
-                                {{ collection.title }}
+                                {{ collection.nom }}
                             </h3>
                             <ImageGallery :images="collection.images" />
                         </div>
@@ -91,14 +91,6 @@ const imageCardClass =
 // Données utilisateur
 const userOeuvres = ref([])
 const userCollections = ref([])
-
-// Collection filtrées
-const validCollections = computed(() =>
-    userCollections.value.filter(
-        (collection) =>
-            Array.isArray(collection.images) && collection.images.length > 0
-    )
-)
 
 const config = useRuntimeConfig()
 const API_URL = config.public.API_BASE_URL
@@ -145,7 +137,7 @@ async function fetchUserCollections(userId) {
             )
             .map((item) => ({
                 id: item.id_collection,
-                title: item.nom,
+                nom: item.nom,
                 images: item.image.map((src, index) => ({
                     id: `${item.id_collection}-${index}`,
                     src,
