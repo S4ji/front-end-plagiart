@@ -44,16 +44,7 @@
                     <FormsCollection />
                     <h2 :class="sectionTitleClass">Vos collections</h2>
                     <div v-if="userCollections.length > 0">
-                        <div
-                            v-for="(collection, i) in userCollections"
-                            :key="i"
-                            class="mb-8"
-                        >
-                            <h3 class="text-xl font-semibold mb-4">
-                                {{ collection.nom }}
-                            </h3>
-                            <ImageGallery :images="collection.images" />
-                        </div>
+                        <ImageGallery :images="userCollections || []" />
                     </div>
                 </div>
 
@@ -131,17 +122,15 @@ async function fetchUserCollections(userId) {
                     Array.isArray(item.image) &&
                     item.image.length > 0
             )
-            .map((item) => ({
-                nom: item.nom,
-                description: item.description, // if you want it too
-                images: item.image.map((src, index) => ({
-                    id: `${item.id_collection}-${index}`,
+            .map((item) =>
+                item.image.map((src, index) => ({
+                    id: `${item.id_collection}`,
                     src,
                     alt: `Image ${index + 1} of collection ${
                         item.id_collection
                     }`,
-                })),
-            }))
+                }))
+            )
     } catch (error) {
         console.error('Error fetching collections:', error)
         return []
