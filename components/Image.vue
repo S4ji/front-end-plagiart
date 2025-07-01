@@ -49,9 +49,8 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'
 
-const { userId, logout } = useAuth()
+const { userId } = useAuth()
 
-const currentUserId = userId.value
 const isOwner = computed(() => {
     return userId.value === props.ownerId
 })
