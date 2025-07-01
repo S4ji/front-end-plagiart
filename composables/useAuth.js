@@ -2,8 +2,10 @@ import { ref, computed } from 'vue'
 
 const isBrowser = typeof window !== 'undefined'
 
+// État connecté / déconnecté
 const _isLoggedIn = ref(isBrowser && !!localStorage.getItem('id'))
 
+// ID utilisateur
 const _userId = computed({
     get() {
         return isBrowser ? localStorage.getItem('id') : null
@@ -19,6 +21,22 @@ const _userId = computed({
     },
 })
 
+// Rôle utilisateur (ADMIN, USER, etc.)
+const _userRole = computed({
+    get() {
+        return isBrowser ? localStorage.getItem('role') : null
+    },
+    set(value) {
+        if (!isBrowser) return
+        if (value === null || value === undefined) {
+            localStorage.removeItem('role')
+        } else {
+            localStorage.setItem('role', value)
+        }
+    },
+})
+
+// Connexion : stocke les infos en localStorage
 function login(data) {
     if (!isBrowser) return
     localStorage.setItem('sub', data.sub)
@@ -28,6 +46,7 @@ function login(data) {
     _isLoggedIn.value = true
 }
 
+// Déconnexion : nettoyage du localStorage
 function logout() {
     if (!isBrowser) return
     localStorage.removeItem('sub')
@@ -37,10 +56,12 @@ function logout() {
     _isLoggedIn.value = false
 }
 
+// Export du composable
 export function useAuth() {
     return {
         isLoggedIn: _isLoggedIn,
         userId: _userId,
+        userRole: _userRole,
         login,
         logout,
     }

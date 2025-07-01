@@ -166,6 +166,10 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+
+const { isLoggedIn, userRole } = useAuth()
+const router = useRouter()
 
 const config = useRuntimeConfig()
 const API_URL = config.public.API_BASE_URL
@@ -322,4 +326,10 @@ const deleteItem = (type, id) => {
         deleteOeuvre(id)
     }
 }
+
+onMounted(() => {
+    if (!isLoggedIn.value || userRole.value !== 'ADMIN') {
+        router.push('/')
+    }
+})
 </script>
