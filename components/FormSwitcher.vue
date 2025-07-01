@@ -39,7 +39,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div v-else-if="selectedForm === 'collection'">
                     <FormsCollection />
                     <h2 :class="sectionTitleClass">Vos collections</h2>
