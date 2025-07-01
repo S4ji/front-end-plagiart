@@ -2,24 +2,6 @@
     <Container>
         <ClientOnly>
             <div :class="sectionSpacing">
-                <div class="mt-12" v-if="collectionData?.images?.length">
-                    <h2 :class="sectionTitle">Images de la collection</h2>
-                    <div :class="gridClass">
-                        <div
-                            v-for="(image, index) in collectionData.images"
-                            :key="image.id || image.src + index"
-                            :class="cardClass"
-                        >
-                            <Image
-                                :image="{
-                                    src: image.src || image.image,
-                                    alt: image.alt || image.titre || 'Œuvre',
-                                    id: image.id || image.id_oeuvre,
-                                }"
-                            />
-                        </div>
-                    </div>
-                </div>
                 <div :class="gridWrapperClass">
                     <div :class="formContainerClass">
                         <div
@@ -32,6 +14,23 @@
                                 @updated="handleUpdated"
                             />
                             <!-- Affichage des images de la collection -->
+                            <div
+                                class="mt-12"
+                                v-if="collectionData?.images?.length"
+                            >
+                                <h2 :class="sectionTitle">
+                                    Images de la collection
+                                </h2>
+                                <div class="mt-12" v-if="mappedImages.length">
+                                    <h2 :class="sectionTitle">
+                                        Images de la collection
+                                    </h2>
+                                    <ImageGallery
+                                        :images="mappedImages"
+                                        :isArtGallery="true"
+                                    />
+                                </div>
+                            </div>
                         </div>
 
                         <p v-else-if="!loaded" :class="loadingClass">
@@ -61,6 +60,16 @@ const router = useRouter()
 const collectionId = route.params.id
 const collectionData = ref(null)
 const loaded = ref(false)
+
+const mappedImages = computed(() => {
+    return (
+        collectionData.value?.images?.map((img) => ({
+            src: img.src || img.image,
+            alt: img.alt || img.titre || 'Œuvre',
+            id: img.id || img.id_oeuvre,
+        })) || []
+    )
+})
 
 async function fetchCollection(id) {
     try {
