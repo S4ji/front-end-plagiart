@@ -39,17 +39,18 @@
                         </div>
                     </div>
                 </div>
+
                 <div v-else-if="selectedForm === 'collection'">
                     <FormsCollection />
                     <h2 :class="sectionTitleClass">Vos collections</h2>
-                    <div :class="gridWrapperClass">
+                    <div>
                         <div
                             v-for="collection in userCollections"
                             :key="collection.id"
-                            class="mb-8"
+                            class="mb-12"
                         >
                             <h3
-                                class="mb-2 text-center text-lg font-semibold text-gray-800"
+                                class="mb-4 text-center text-lg font-semibold text-gray-800"
                             >
                                 {{ collection.nom }}
                             </h3>
@@ -65,12 +66,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useAuth } from '@/composables/useAuth'
 
 const { userId } = useAuth()
 
-// UI state
 const selectedForm = ref('oeuvre')
 
 const formList = [
@@ -78,7 +78,7 @@ const formList = [
     { id: 'collection', label: 'Créer une collection' },
 ]
 
-// Tailwind classes
+// Classes Tailwind
 const containerClass = 'my-8'
 const menuWrapperClass = 'flex justify-center gap-4 mb-6'
 const emptyStateClass = 'text-center text-gray-500'
@@ -88,14 +88,13 @@ const gridWrapperClass =
 const imageCardClass =
     'relative group w-full border rounded-xl p-4 shadow hover:shadow-lg transition'
 
-// Données utilisateur
+// Données
 const userOeuvres = ref([])
 const userCollections = ref([])
 
 const config = useRuntimeConfig()
 const API_URL = config.public.API_BASE_URL
 
-// Requête œuvres
 async function fetchUserOeuvres(userId) {
     try {
         const res = await fetch(`${API_URL}/oeuvres/user/${userId}`)
@@ -120,7 +119,6 @@ async function fetchUserOeuvres(userId) {
     }
 }
 
-// Requête collections
 async function fetchUserCollections(userId) {
     try {
         const res = await fetch(`${API_URL}/collections/user/${userId}`)
@@ -152,7 +150,6 @@ async function fetchUserCollections(userId) {
     }
 }
 
-// Lifecycle
 onMounted(async () => {
     userOeuvres.value = await fetchUserOeuvres(userId.value)
     userCollections.value = await fetchUserCollections(userId.value)
