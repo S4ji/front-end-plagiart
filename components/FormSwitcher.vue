@@ -31,6 +31,11 @@
                                 :isEditable="true"
                                 :ownerId="userId"
                             />
+                            <h3
+                                class="mt-2 text-center text-sm font-medium text-gray-700"
+                            >
+                                {{ image.title }}
+                            </h3>
                         </div>
                     </div>
                 </div>
@@ -38,7 +43,26 @@
                 <div v-else-if="selectedForm === 'collection'">
                     <FormsCollection />
                     <h2 :class="sectionTitleClass">Vos collections</h2>
-                    <ImageGallery :images="userCollections || []" />
+                    <div :class="gridWrapperClass">
+                        <div
+                            v-for="(collection, index) in userCollections"
+                            :key="index"
+                            :class="imageCardClass"
+                        >
+                            <div v-for="(img, idx) in collection" :key="idx">
+                                <img
+                                    :src="img.src"
+                                    :alt="img.alt"
+                                    class="rounded-lg w-full object-cover"
+                                />
+                            </div>
+                            <h3
+                                class="mt-2 text-center text-sm font-medium text-gray-700"
+                            >
+                                Collection {{ collection[0]?.id }}
+                            </h3>
+                        </div>
+                    </div>
                 </div>
 
                 <p v-else :class="emptyStateClass">Choisissez quoi créer.</p>
