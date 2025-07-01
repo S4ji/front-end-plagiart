@@ -20,6 +20,7 @@
                     :class="imageCardClass"
                 >
                     <Image
+                        :showAddButton="false"
                         :image="image"
                         :isEditable="false"
                         :ownerId="currentUserId"
