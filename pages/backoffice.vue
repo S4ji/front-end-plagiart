@@ -229,20 +229,35 @@ onMounted(() => {
     fetchSignalements()
 })
 
-const updateSignalementStatus = async (id, statut) => {
+const updateSignalementStatus = async (id, newStatut) => {
+    const signalement = signalements.value.find((s) => s.id_signalement === id)
+
+    if (!signalement) {
+        console.error('Signalement non trouvé pour ID', id)
+        return
+    }
+
     try {
         const response = await fetch(`${API_URL}/signalements/update`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ id_signalement: id, statut }),
+            body: JSON.stringify({
+                id_signalement: id,
+                id_utilisateur: signalement.id_utilisateur,
+                id_oeuvre: signalement.id_oeuvre,
+                raison: signalement.raison,
+                date_signalement: signalement.date_signalement,
+                statut: newStatut,
+            }),
         })
         if (!response.ok) throw new Error('Erreur de mise à jour')
-        console.log('Statut mis à jour pour le signalement', id)
+
+        console.log('Signalement mis à jour avec succès')
         await fetchSignalements()
     } catch (error) {
-        console.error('Erreur lors de la mise à jour du statut:', error)
+        console.error('Erreur lors de la mise à jour du signalement:', error)
     }
 }
 
