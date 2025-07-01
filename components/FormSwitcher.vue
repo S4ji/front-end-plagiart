@@ -45,14 +45,16 @@
                     <h2 :class="sectionTitleClass">Vos collections</h2>
                     <div :class="gridWrapperClass">
                         <div
-                            v-for="collection in userCollections"
+                            v-for="collection in validCollections"
                             :key="collection.id"
                             :class="imageCardClass"
                         >
-                            <ImageGallery :images="collection.images" />
+                            <ImageGallery :images="[...collection.images]" />
                             <h3
                                 class="mt-2 text-center text-sm font-medium text-gray-700"
-                            ></h3>
+                            >
+                                {{ collection.title }}
+                            </h3>
                         </div>
                     </div>
                 </div>
@@ -64,10 +66,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useAuth } from '@/composables/useAuth'
 
-const { userId, logout } = useAuth()
+const { userId } = useAuth()
 
 // UI state
 const selectedForm = ref('oeuvre')
@@ -90,6 +92,14 @@ const imageCardClass =
 // Données utilisateur
 const userOeuvres = ref([])
 const userCollections = ref([])
+
+// Collection filtrées
+const validCollections = computed(() =>
+    userCollections.value.filter(
+        (collection) =>
+            Array.isArray(collection.images) && collection.images.length > 0
+    )
+)
 
 const config = useRuntimeConfig()
 const API_URL = config.public.API_BASE_URL
@@ -134,11 +144,13 @@ async function fetchUserCollections(userId) {
             .map((item) => ({
                 id: item.id_collection,
                 title: item.nom,
-                images: item.image.slice(0, 3).map((src, index) => ({
-                    id: item.id_collection,
-                    src,
-                    alt: `Image ${index + 1} de ${item.nom}`,
-                })),
+                images: [
+                    ...item.image.filter(Boolean).map((src, index) => ({
+                        id: item.id_collection,
+                        src,
+                        alt: `Image ${index + 1} de ${item.nom}`,
+                    })),
+                ],
             }))
     } catch (error) {
         console.error('Error fetching collections:', error)
@@ -148,7 +160,6 @@ async function fetchUserCollections(userId) {
 
 // Lifecycle
 onMounted(async () => {
-    console.log(userId)
     userOeuvres.value = await fetchUserOeuvres(userId.value)
     userCollections.value = await fetchUserCollections(userId.value)
 })
