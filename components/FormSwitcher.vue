@@ -45,22 +45,18 @@
                     <h2 :class="sectionTitleClass">Vos collections</h2>
                     <div :class="gridWrapperClass">
                         <div
-                            v-for="(collection, index) in userCollections"
-                            :key="index"
+                            v-for="collection in userCollections"
+                            :key="collection.id"
                             :class="imageCardClass"
                         >
-                            <div v-for="(img, idx) in collection" :key="idx">
-                                <img
-                                    :src="img.src"
-                                    :alt="img.alt"
-                                    class="rounded-lg w-full object-cover"
-                                />
+                            <ImageGallery :images="collection.images" />
+                            <div class="mt-2">
+                                <h3
+                                    class="text-center text-sm font-medium text-gray-700"
+                                >
+                                    {{ collection.title }}
+                                </h3>
                             </div>
-                            <h3
-                                class="mt-2 text-center text-sm font-medium text-gray-700"
-                            >
-                                Collection {{ collection[0]?.id }}
-                            </h3>
                         </div>
                     </div>
                 </div>
