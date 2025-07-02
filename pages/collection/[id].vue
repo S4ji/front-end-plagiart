@@ -15,8 +15,7 @@
 
             <Button
                 v-if="
-                    collectionStore.currentCollection.userId ===
-                    loggedUser.value
+                    collectionStore.currentCollection.userId == loggedUser.value
                 "
                 @click="goToEdit"
             >
