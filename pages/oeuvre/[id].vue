@@ -8,7 +8,7 @@
                         :alt="oeuvre.title || 'Oeuvre image'"
                         class="block max-w-full max-h-[80vh] object-contain rounded-lg"
                     />
-                    <div class="flex justify-center">
+                    <div class="justify-center">
                         {{ oeuvre.title }}
                         <CreatedBy
                             :id="oeuvre.artiste.id"
