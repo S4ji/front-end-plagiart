@@ -43,22 +43,18 @@
                 <div v-else-if="selectedForm === 'collection'">
                     <FormsCollection />
                     <h2 :class="sectionTitleClass">Vos collections</h2>
-                    <div v-if="userCollections.length > 0">
+                    <div>
                         <div
                             v-for="collection in userCollections"
-                            :key="collection.id_collection"
-                            class="mb-8"
+                            :key="collection.id"
+                            class="mb-12"
                         >
-                            <h3 class="text-xl font-semibold text-center mb-2">
+                            <h3
+                                class="mb-4 text-center text-lg font-semibold text-gray-800"
+                            >
                                 {{ collection.nom }}
                             </h3>
-                            <p class="text-center text-gray-500 mb-4">
-                                {{ collection.description }}
-                            </p>
-
-                            <ImageGallery
-                                :images="collection.imagesFormatted"
-                            />
+                            <ImageGallery :images="collection.images" />
                         </div>
                     </div>
                 </div>
@@ -122,6 +118,7 @@ async function fetchUserOeuvres(userId) {
         return []
     }
 }
+
 async function fetchUserCollections(userId) {
     try {
         const res = await fetch(`${API_URL}/collections/user/${userId}`)
@@ -136,14 +133,15 @@ async function fetchUserCollections(userId) {
                     Array.isArray(item.image) &&
                     item.image.length > 0
             )
-            .map((item) => ({
-                ...item,
-                imagesFormatted: item.image.map((src, index) => ({
+            .map((item) =>
+                item.image.map((src, index) => ({
                     id: `${item.id_collection}`,
                     src,
-                    alt: `Image ${index + 1} of collection ${item.nom}`,
-                })),
-            }))
+                    alt: `Image ${index + 1} of collection ${
+                        item.id_collection
+                    }`,
+                }))
+            )
     } catch (error) {
         console.error('Error fetching collections:', error)
         return []
