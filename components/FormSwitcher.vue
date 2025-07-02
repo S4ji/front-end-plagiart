@@ -44,7 +44,22 @@
                     <FormsCollection />
                     <h2 :class="sectionTitleClass">Vos collections</h2>
                     <div v-if="userCollections.length > 0">
-                        <ImageGallery :images="userCollections || []" />
+                        <div
+                            v-for="collection in userCollections"
+                            :key="collection.id_collection"
+                            class="mb-8"
+                        >
+                            <h3 class="text-xl font-semibold text-center mb-2">
+                                {{ collection.nom }}
+                            </h3>
+                            <p class="text-center text-gray-500 mb-4">
+                                {{ collection.description }}
+                            </p>
+
+                            <ImageGallery
+                                :images="collection.imagesFormatted"
+                            />
+                        </div>
                     </div>
                 </div>
 
@@ -107,7 +122,6 @@ async function fetchUserOeuvres(userId) {
         return []
     }
 }
-
 async function fetchUserCollections(userId) {
     try {
         const res = await fetch(`${API_URL}/collections/user/${userId}`)
@@ -122,15 +136,14 @@ async function fetchUserCollections(userId) {
                     Array.isArray(item.image) &&
                     item.image.length > 0
             )
-            .map((item) =>
-                item.image.map((src, index) => ({
+            .map((item) => ({
+                ...item,
+                imagesFormatted: item.image.map((src, index) => ({
                     id: `${item.id_collection}`,
                     src,
-                    alt: `Image ${index + 1} of collection ${
-                        item.id_collection
-                    }`,
-                }))
-            )
+                    alt: `Image ${index + 1} of collection ${item.nom}`,
+                })),
+            }))
     } catch (error) {
         console.error('Error fetching collections:', error)
         return []
