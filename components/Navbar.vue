@@ -35,6 +35,14 @@
                             {{ item.title }}
                         </button>
                     </li>
+                    <li>
+                        <span
+                            v-if="isLoggedIn"
+                            class="ml-4 text-sm font-medium text-gray-700"
+                        >
+                            Bonjour, {{ userName || 'Utilisateur' }}
+                        </span>
+                    </li>
                 </ul>
             </nav>
         </header>
@@ -47,7 +55,7 @@ import { useRouter } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'
 
 const router = useRouter()
-const { userId, isLoggedIn, logout } = useAuth()
+const { userName, userId, isLoggedIn, logout } = useAuth()
 
 const open = ref(false)
 const searchTerm = ref('')

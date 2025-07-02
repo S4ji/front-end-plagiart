@@ -36,6 +36,21 @@ const _userRole = computed({
     },
 })
 
+// Nom utilisateur
+const _userName = computed({
+    get() {
+        return isBrowser ? localStorage.getItem('name') : null
+    },
+    set(value) {
+        if (!isBrowser) return
+        if (value === null || value === undefined) {
+            localStorage.removeItem('name')
+        } else {
+            localStorage.setItem('name', value)
+        }
+    },
+})
+
 // Connexion : stocke les infos en localStorage
 function login(data) {
     if (!isBrowser) return
@@ -62,6 +77,7 @@ export function useAuth() {
         isLoggedIn: _isLoggedIn,
         userId: _userId,
         userRole: _userRole,
+        userName: _userName,
         login,
         logout,
     }
