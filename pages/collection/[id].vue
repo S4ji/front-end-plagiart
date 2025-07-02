@@ -109,7 +109,7 @@ watch(
 
 // Navigation vers la page d'édition
 function goToEdit() {
-    if (id) {
+    if (route.params.id) {
         router.push(`/editcollection/${route.params.id}`)
     } else {
         alert("Impossible d'éditer : collection non chargée.")
