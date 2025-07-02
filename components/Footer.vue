@@ -11,8 +11,6 @@
 </template>
 <script setup>
 import { useAuth } from '@/composables/useAuth'
-import { useRouter } from 'vue-router'
 
-const router = useRouter()
-const { userName } = useAuth()
+const { userName, isLoggedIn } = useAuth()
 </script>
