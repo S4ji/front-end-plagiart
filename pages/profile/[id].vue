@@ -5,6 +5,11 @@
                 <h2 v-id="utilisateur" class="text-2xl font-semibold">
                     {{ utilisateur?.nom || 'Utilisateur inconnu' }}
                 </h2>
+                <div v-if="isOwnProfile" class="ml-4">
+                    <Button @click="goToEditProfile" size="md">
+                        Éditer profil
+                    </Button>
+                </div>
             </div>
 
             <h2 :class="sectionTitleClass">Oeuvres</h2>
@@ -132,6 +137,14 @@ async function fetchUtilisateurById(id) {
             error
         )
         return null
+    }
+}
+
+function goToEditProfile() {
+    if (userId) {
+        router.push(`/userprofileedit/${userId}`)
+    } else {
+        alert('Impossible d’éditer : profil non chargé.')
     }
 }
 
