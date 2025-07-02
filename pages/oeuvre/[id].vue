@@ -8,11 +8,13 @@
                         :alt="oeuvre.title || 'Oeuvre image'"
                         class="block max-w-full max-h-[80vh] object-contain rounded-lg"
                     />
-                    {{ oeuvre.title }}
-                    <CreatedBy
-                        :id="oeuvre.artiste.id"
-                        :name="oeuvre.artiste.nom"
-                    />
+                    <div class="flex justify-center">
+                        {{ oeuvre.title }}
+                        <CreatedBy
+                            :id="oeuvre.artiste.id"
+                            :name="oeuvre.artiste.nom"
+                        />
+                    </div>
 
                     <div
                         class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-10"
