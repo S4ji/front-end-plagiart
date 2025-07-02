@@ -43,11 +43,11 @@
                 <div v-else-if="selectedForm === 'collection'">
                     <FormsCollection />
                     <h2 :class="sectionTitleClass">Vos collections</h2>
-                    <div>
+                    <div :class="gridWrapperClass">
                         <div
                             v-for="collection in userCollections"
                             :key="collection.id"
-                            :class="gridWrapperClass"
+                            :class="imageCardClass"
                         >
                             <h3
                                 class="mb-4 text-center text-lg font-semibold text-gray-800"
