@@ -65,11 +65,12 @@ const handleSubmit = async () => {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    id_collection: route.params.id,
+                    id_collection: Number(route.params.id), // conversion obligatoire
                     nom: formData.value.nom,
                     description: formData.value.description,
                 }),
             })
+
             if (!res.ok) throw new Error('Erreur mise à jour')
             const updated = await res.json()
             alert('✅ Collection mise à jour')
