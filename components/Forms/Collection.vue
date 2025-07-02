@@ -61,17 +61,15 @@ const handleSubmit = async () => {
     try {
         if (isEditing.value && route.params.id) {
             // UPDATE
-            const res = await fetch(
-                `${API_URL}/collections/${route.params.id}`,
-                {
-                    method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        nom: formData.value.nom,
-                        description: formData.value.description,
-                    }),
-                }
-            )
+            const res = await fetch(`${API_URL}/collections/update`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id_collection: route.params.id,
+                    nom: formData.value.nom,
+                    description: formData.value.description,
+                }),
+            })
             if (!res.ok) throw new Error('Erreur mise à jour')
             const updated = await res.json()
             alert('✅ Collection mise à jour')
