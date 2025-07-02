@@ -8,6 +8,7 @@
                         :alt="oeuvre.title || 'Oeuvre image'"
                         class="block max-w-full max-h-[80vh] object-contain rounded-lg"
                     />
+                    {{ oeuvre.title }}
                     <CreatedBy
                         :id="oeuvre.artiste.id"
                         :name="oeuvre.artiste.nom"
