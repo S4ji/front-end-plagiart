@@ -2,11 +2,6 @@
     <Container>
         <div :class="containerClass">
             <div class="text-center mb-8">
-                <img
-                    src="https://via.placeholder.com/150"
-                    alt="Avatar"
-                    class="rounded-full mx-auto mb-4"
-                />
                 <h2 class="text-2xl font-semibold">Nom de l'utilisateur</h2>
                 <p class="text-gray-600">Rôle: Artiste</p>
                 <p class="text-gray-600">Lieu: Paris, France</p>
