@@ -1,29 +1,27 @@
 <template>
     <div :class="wrapperClass">
         <div :class="sectionSpacing">
-            <div class="flex justify-center">
-                <div class="relative inline-block group">
+            <div :class="imageContainerClass">
+                <div :class="relativeGroupClass">
                     <img
                         :src="oeuvre.image || placeholderImage"
                         :alt="oeuvre.title || 'Oeuvre image'"
-                        class="block max-w-full max-h-[80vh] object-contain rounded-lg"
+                        :class="imageClass"
                     />
-                    <div class="justify-center">
-                        {{ oeuvre.title }}
+                    <div :class="titleCreatedByWrapperClass">
+                        <span>{{ oeuvre.title }}</span>
                         <CreatedBy
                             :id="oeuvre.artiste.id"
                             :name="oeuvre.artiste.nom"
                         />
                     </div>
 
-                    <div
-                        class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-10"
-                    >
+                    <div :class="mainImageButtonWrapperClass">
                         <button
-                            class="bg-white/80 hover:bg-white rounded-full p-1 shadow transition cursor-pointer"
+                            :class="mainImageButtonClass"
                             @click.stop="onMainImageButtonClick"
                         >
-                            <span class="text-xl font-bold">+</span>
+                            <span :class="plusSignClass">+</span>
                         </button>
                     </div>
                 </div>
@@ -41,11 +39,14 @@
             </Button>
         </div>
 
-        <div class="mt-12" v-if="relatedCollections.length > 0">
+        <div
+            v-if="relatedCollections.length > 0"
+            :class="sectionMarginTopClass"
+        >
             <h2 :class="sectionTitleClass">Collections associées</h2>
             <ImageGallery :images="relatedCollections" />
         </div>
-        <div class="mt-12" v-if="relatedImages.length > 0">
+        <div v-if="relatedImages.length > 0" :class="sectionMarginTopClass">
             <h2 :class="sectionTitleClass">Œuvres similaires</h2>
             <div :class="galleryGridClass">
                 <Image
@@ -220,14 +221,23 @@ async function createLike() {
     }
 }
 
+// Classes Tailwind extraites en variables
+
 const wrapperClass = 'p-6'
 const sectionSpacing = 'mb-6'
-const sectionTitleClass = 'text-xl font-semibold mb-4'
+const imageContainerClass = 'flex justify-center'
+const relativeGroupClass = 'relative inline-block group'
+const imageClass = 'block max-w-full max-h-[80vh] object-contain rounded-lg'
+const titleCreatedByWrapperClass = 'flex flex-col items-center justify-center'
+const mainImageButtonWrapperClass =
+    'absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-10'
+const mainImageButtonClass =
+    'bg-white/80 hover:bg-white rounded-full p-1 shadow transition cursor-pointer'
+const plusSignClass = 'text-xl font-bold'
 const buttonGroupClass = 'flex gap-4 mb-12'
 const reportButtonClass =
     'bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition w-full sm:w-auto'
+const sectionTitleClass = 'text-xl font-semibold mb-4'
+const sectionMarginTopClass = 'mt-12'
 const galleryGridClass = 'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4'
-const galleryItemClass =
-    'border rounded-lg overflow-hidden shadow hover:shadow-md transition'
-const galleryImageClass = 'w-full h-auto object-fit'
 </script>
