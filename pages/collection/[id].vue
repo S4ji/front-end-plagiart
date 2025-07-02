@@ -111,7 +111,7 @@ watch(
 function goToEdit() {
     const id = collectionStore.currentCollection.id_collection
     if (id) {
-        router.push(`/editer-collection/${id}`)
+        router.push(`/editcollection/${id}`)
     } else {
         alert("Impossible d'éditer : collection non chargée.")
     }
