@@ -14,7 +14,10 @@
             </div>
 
             <Button
-                v-if="collectionStore.currentCollection.userId === loggedUser"
+                v-if="
+                    collectionStore.currentCollection.userId ===
+                    loggedUser.value
+                "
                 @click="goToEdit"
             >
                 Éditer informations collection
@@ -73,7 +76,7 @@ definePageMeta({ layout: 'main' })
 
 const { userId, logout } = useAuth()
 
-const loggedUser = userId.value
+const loggedUser = computed(() => userId.value)
 
 const config = useRuntimeConfig()
 const API_URL = config.public.API_BASE_URL
