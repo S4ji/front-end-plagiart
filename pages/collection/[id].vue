@@ -13,12 +13,7 @@
                 </p>
             </div>
 
-            <Button
-                v-if="
-                    collectionStore.currentCollection.userId == loggedUser.value
-                "
-                @click="goToEdit"
-            >
+            <Button v-if="isOwner" @click="goToEdit">
                 Éditer informations collection
             </Button>
         </div>
@@ -76,6 +71,9 @@ definePageMeta({ layout: 'main' })
 const { userId, logout } = useAuth()
 
 const loggedUser = computed(() => userId.value)
+const isOwner = computed(
+    () => collectionStore.currentCollection.userId === loggedUser.value
+)
 
 const config = useRuntimeConfig()
 const API_URL = config.public.API_BASE_URL
