@@ -10,7 +10,7 @@ export const useSearchStore = defineStore('search', () => {
 
     function initQuery() {
         if (!query.value.trim()) {
-            query.value = ' '
+            query.value = 'oeuvre'
         }
     }
 
