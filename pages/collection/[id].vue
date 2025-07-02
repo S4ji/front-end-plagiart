@@ -109,7 +109,6 @@ watch(
 
 // Navigation vers la page d'édition
 function goToEdit() {
-    const id = collectionStore.currentCollection.id_collection
     if (id) {
         router.push(`/editcollection/${id}`)
     } else {
