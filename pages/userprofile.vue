@@ -10,6 +10,11 @@
                 <h2 class="text-2xl font-semibold">Nom de l'utilisateur</h2>
                 <p class="text-gray-600">Rôle: Artiste</p>
                 <p class="text-gray-600">Lieu: Paris, France</p>
+                <p class="mt-4 text-sm text-gray-500">
+                    Visite le profil de : {{ currentUserId }} <br />
+                    Utilisateur connecté : {{ connectedUserId }} <br />
+                    isOwnProfile : {{ isOwnProfile ? 'Oui' : 'Non' }}
+                </p>
             </div>
 
             <h2 :class="sectionTitleClass">Vos œuvres</h2>
@@ -22,8 +27,14 @@
                     <Image
                         :image="image"
                         :ownerId="currentUserId"
-                        :isEditable="true"
+                        :isEditable="isOwnProfile"
+                        :showAddButton="!isOwnProfile"
                     />
+                    <h3
+                        class="mt-2 text-center text-sm font-medium text-gray-700"
+                    >
+                        {{ image.title }}
+                    </h3>
                 </div>
             </div>
 
@@ -39,18 +50,19 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { useAuth } from '@/composables/useAuth'
 
 const config = useRuntimeConfig()
 const API_URL = config.public.API_BASE_URL
 
-definePageMeta({
-    layout: 'main',
-})
-
 const route = useRoute()
+const { userId: connectedUserId } = useAuth()
+
 const currentUserId = route.params.id
+
+const isOwnProfile = computed(() => currentUserId === connectedUserId.value)
 
 const userOeuvres = ref([])
 const userCollections = ref([])
@@ -62,9 +74,9 @@ const gridWrapperClass =
 const imageCardClass =
     'relative group w-full border rounded-xl p-4 shadow hover:shadow-lg transition'
 
-async function fetchUserOeuvres(currentUserId) {
+async function fetchUserOeuvres(userId) {
     try {
-        const res = await fetch(`${API_URL}/oeuvres/user/${currentUserId}`)
+        const res = await fetch(`${API_URL}/oeuvres/user/${userId}`)
         if (!res.ok) throw new Error('Failed to fetch œuvres')
 
         const data = await res.json()
@@ -86,9 +98,9 @@ async function fetchUserOeuvres(currentUserId) {
     }
 }
 
-async function fetchUserCollections(currentUserId) {
+async function fetchUserCollections(userId) {
     try {
-        const res = await fetch(`${API_URL}/collections/user/${currentUserId}`)
+        const res = await fetch(`${API_URL}/collections/user/${userId}`)
         if (!res.ok) throw new Error('Failed to fetch collections')
 
         const data = await res.json()
