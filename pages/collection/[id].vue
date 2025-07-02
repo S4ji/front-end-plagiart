@@ -14,9 +14,7 @@
             </div>
 
             <Button
-                v-if="
-                    collectionStore.currentCollection.id_utilisateur === userId
-                "
+                v-if="collectionStore.currentCollection.userId === loggedUser"
                 @click="goToEdit"
             >
                 Éditer informations collection
@@ -74,6 +72,8 @@ import { useAuth } from '@/composables/useAuth'
 definePageMeta({ layout: 'main' })
 
 const { userId, logout } = useAuth()
+
+const loggedUser = userId.value
 
 const config = useRuntimeConfig()
 const API_URL = config.public.API_BASE_URL
