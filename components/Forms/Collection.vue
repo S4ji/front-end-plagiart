@@ -25,40 +25,44 @@
         </form>
     </Container>
 </template>
-
 <script setup>
-import { ref, watch, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 
 const config = useRuntimeConfig()
 const API_URL = config.public.API_BASE_URL
+
 const router = useRouter()
-
-const props = defineProps({
-    initialCollection: Object,
-    isEditing: Boolean,
-})
-
-const emit = defineEmits(['updated'])
+const route = useRoute()
 
 const formData = ref({
     nom: '',
     description: '',
 })
 
-onMounted(() => {
-    if (props.isEditing && props.initialCollection) {
-        formData.value.nom = props.initialCollection.nom || ''
-        formData.value.description = props.initialCollection.description || ''
+const isEditing = ref(false)
+
+onMounted(async () => {
+    if (route.params.id) {
+        isEditing.value = true
+        try {
+            const res = await fetch(`${API_URL}/collections/${route.params.id}`)
+            if (!res.ok) throw new Error('Erreur chargement collection')
+            const data = await res.json()
+            formData.value.nom = data.nom || ''
+            formData.value.description = data.description || ''
+        } catch (e) {
+            alert('Erreur chargement collection')
+        }
     }
 })
 
 const handleSubmit = async () => {
     try {
-        if (props.isEditing && props.initialCollection?.id_collection) {
+        if (isEditing.value && route.params.id) {
             // UPDATE
             const res = await fetch(
-                `${API_URL}/collections/${props.initialCollection.id_collection}`,
+                `${API_URL}/collections/${route.params.id}`,
                 {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json' },
@@ -69,14 +73,13 @@ const handleSubmit = async () => {
                 }
             )
             if (!res.ok) throw new Error('Erreur mise à jour')
-
             const updated = await res.json()
-            emit('updated', updated)
             alert('✅ Collection mise à jour')
             router.push(`/collection/${updated.id_collection}`)
         } else {
             // CREATE
             const userId = localStorage.getItem('id')
+            if (!userId) throw new Error('Utilisateur non identifié')
             const res = await fetch(`${API_URL}/collections/new`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -91,15 +94,11 @@ const handleSubmit = async () => {
             alert('✅ Collection créée')
             formData.value.nom = ''
             formData.value.description = ''
+            router.push(`/collection/${created.id_collection}`)
         }
     } catch (err) {
         console.error('Erreur formulaire collection:', err)
         alert('❌ Une erreur est survenue.')
     }
 }
-
-const formClass = 'space-y-4'
-const labelClass = 'block text-sm font-semibold'
-const inputClass =
-    'mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
 </script>
