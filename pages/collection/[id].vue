@@ -13,12 +13,14 @@
                 </p>
             </div>
 
-            <button
+            <Button
+                v-if="
+                    collectionStore.currentCollection.id_utilisateur === userId
+                "
                 @click="goToEdit"
-                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
             >
                 Éditer informations collection
-            </button>
+            </Button>
         </div>
 
         <div class="overflow-x-auto mt-8">
@@ -68,11 +70,13 @@
 import { onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useCollectionStore } from '@/stores/collection'
+import { useAuth } from '@/composables/useAuth'
+definePageMeta({ layout: 'main' })
+
+const { userId, logout } = useAuth()
 
 const config = useRuntimeConfig()
 const API_URL = config.public.API_BASE_URL
-
-definePageMeta({ layout: 'main' })
 
 const collectionStore = useCollectionStore()
 const route = useRoute()
