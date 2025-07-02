@@ -54,7 +54,7 @@
                             >
                                 {{ collection.nom }}
                             </h3>
-                            <ImageGallery :images="collection.images" />
+                            <ImageGallery :images="userCollections" />
                         </div>
                     </div>
                 </div>
