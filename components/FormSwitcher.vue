@@ -47,7 +47,6 @@
                         <div
                             v-for="collection in userCollections"
                             :key="collection.id"
-                            :class="imageCardClass"
                         >
                             <h3
                                 class="mb-4 text-center text-lg font-semibold text-gray-800"
