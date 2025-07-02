@@ -48,6 +48,10 @@ import { ClientOnly } from '#components'
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+definePageMeta({
+    layout: 'main',
+})
+
 const config = useRuntimeConfig()
 const API_URL = config.public.API_BASE_URL
 
