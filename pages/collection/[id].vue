@@ -1,15 +1,24 @@
 <template>
     <div class="p-6">
-        <div class="mb-6">
-            <h1 :class="titleClass">
-                {{ collectionStore.currentCollection.nom }}
-            </h1>
-            <p
-                v-if="collectionStore.currentCollection.description"
-                :class="subTextClass"
+        <div class="mb-6 flex justify-between items-start">
+            <div>
+                <h1 :class="titleClass">
+                    {{ collectionStore.currentCollection.nom }}
+                </h1>
+                <p
+                    v-if="collectionStore.currentCollection.description"
+                    :class="subTextClass"
+                >
+                    {{ collectionStore.currentCollection.description }}
+                </p>
+            </div>
+
+            <button
+                @click="goToEdit"
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
             >
-                {{ collectionStore.currentCollection.description }}
-            </p>
+                Éditer informations collection
+            </button>
         </div>
 
         <div class="overflow-x-auto mt-8">
@@ -57,7 +66,7 @@
 
 <script setup>
 import { onMounted, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useCollectionStore } from '@/stores/collection'
 
 const config = useRuntimeConfig()
@@ -67,6 +76,7 @@ definePageMeta({ layout: 'main' })
 
 const collectionStore = useCollectionStore()
 const route = useRoute()
+const router = useRouter()
 
 const placeholderImage = 'https://via.placeholder.com/500x500?text=No+Image'
 
@@ -96,6 +106,16 @@ watch(
         }
     }
 )
+
+// Navigation vers la page d'édition
+function goToEdit() {
+    const id = collectionStore.currentCollection.id_collection
+    if (id) {
+        router.push(`/editer-collection/${id}`)
+    } else {
+        alert("Impossible d'éditer : collection non chargée.")
+    }
+}
 
 // Remove image handler
 function removeFromCollection(imageId) {
