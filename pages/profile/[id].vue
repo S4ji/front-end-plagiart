@@ -2,11 +2,6 @@
     <Container>
         <div :class="containerClass">
             <div class="text-center mb-8">
-                <img
-                    src="https://via.placeholder.com/150"
-                    alt="Avatar"
-                    class="rounded-full mx-auto mb-4"
-                />
                 <h2 v-id="utilisateur" class="text-2xl font-semibold">
                     {{ utilisateur?.nom || 'Utilisateur inconnu' }}
                 </h2>
