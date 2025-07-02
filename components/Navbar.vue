@@ -36,10 +36,7 @@
                         </button>
                     </li>
                     <li>
-                        <span
-                            v-if="isLoggedIn"
-                            class="ml-4 text-sm font-medium text-gray-700"
-                        >
+                        <span v-if="isLoggedIn" class="text-gray-700">
                             Bonjour, {{ userName || 'Utilisateur' }}
                         </span>
                     </li>
