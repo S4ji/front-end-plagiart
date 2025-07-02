@@ -63,6 +63,8 @@ const props = defineProps({
 })
 const { userId } = useAuth()
 const isOwner = computed(() => {
+    console.log('userId', userId.value, 'ownerId', props.ownerId)
+
     return userId.value === props.ownerId
 })
 
