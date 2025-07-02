@@ -19,11 +19,6 @@
 
             <nav :class="[navClass, { block: open, hidden: !open }]">
                 <ul :class="navListClass">
-                    <li>
-                        <span v-if="isLoggedIn" class="text-gray-700">
-                            Bonjour, {{ userName || 'Utilisateur' }}
-                        </span>
-                    </li>
                     <li v-for="item in menuitems" :key="item.title">
                         <NuxtLink
                             v-if="!item.action"
