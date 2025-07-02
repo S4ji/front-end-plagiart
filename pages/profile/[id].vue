@@ -21,8 +21,9 @@
                 >
                     <Image
                         :image="image"
-                        :isEditable="false"
                         :ownerId="userId"
+                        :isEditable="isOwnProfile"
+                        :showAddButton="!isOwnProfile"
                     />
                 </div>
             </div>
@@ -39,8 +40,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { useAuth } from '@/composables/useAuth'
 
 const config = useRuntimeConfig()
 const API_URL = config.public.API_BASE_URL
@@ -51,6 +53,9 @@ definePageMeta({
 
 const route = useRoute()
 const userId = route.params.id
+
+const { userId: connectedUserId } = useAuth()
+const isOwnProfile = computed(() => userId === connectedUserId.value)
 
 const utilisateur = ref(null)
 const userOeuvres = ref([])
@@ -93,7 +98,6 @@ async function fetchUserCollections(userId) {
         if (!res.ok) throw new Error('Failed to fetch collections')
 
         const data = await res.json()
-
         return data
             .filter(
                 (item) =>
@@ -119,13 +123,11 @@ async function fetchUserCollections(userId) {
 async function fetchUtilisateurById(id) {
     try {
         const response = await fetch(`${API_URL}/utilisateurs/${id}`)
-
         if (!response.ok) {
             throw new Error(
                 `Erreur ${response.status} : utilisateur non trouvé`
             )
         }
-
         const data = await response.json()
         console.log('fetchUtilisateurById', data)
         return data
