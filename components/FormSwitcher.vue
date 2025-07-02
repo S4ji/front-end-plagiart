@@ -48,11 +48,6 @@
                             v-for="collection in userCollections"
                             :key="collection.id"
                         >
-                            <h3
-                                class="mb-4 text-center text-lg font-semibold text-gray-800"
-                            >
-                                {{ collection.nom }}
-                            </h3>
                             <ImageGallery :images="userCollections" />
                         </div>
                     </div>
