@@ -57,17 +57,18 @@ const handleSubmit = async () => {
     try {
         if (props.isEditing && props.initialCollection?.id_collection) {
             // UPDATE
-            const res = await fetch(
-                `${API_URL}/collections/${props.initialCollection.id_collection}`,
-                {
-                    method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        nom: formData.value.nom,
-                        description: formData.value.description,
-                    }),
-                }
-            )
+            const userId = localStorage.getItem('id')
+
+            const res = await fetch(`${API_URL}/collections/update`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id_collection: props.initialCollection.id_collection,
+                    nom: formData.value.nom,
+                    description: formData.value.description,
+                    id_utilisateur: userId,
+                }),
+            })
             if (!res.ok) throw new Error('Erreur mise à jour')
 
             const updated = await res.json()
